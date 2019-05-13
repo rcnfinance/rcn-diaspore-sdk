@@ -1,0 +1,93 @@
+{
+  "name": "@jpgonzalezra/rcn-diaspore-sdk",
+  "version": "2.1.0-beta.3",
+  "description": "Smart TS wrappers for Diaspore smart contracts",
+  "keywords": [
+    "diaspore",
+    "ethereum"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "start": "webpack-dev-server --config=webpack.config.dev.js",
+    "build": "webpack",
+    "build:ci": "yarn build",
+    "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
+    "lint:fix": "./node_modules/.bin/eslint ./src --ext .js,.ts --fix",
+    "clean": "shx rm -rf lib docs",
+    "docs": "typedoc --excludePrivate --excludeExternals --exclude node_modules/ --name 'RCN DIASPORE API' --target ES5 --module commonjs --tsconfig typedoc-tsconfig.json --out docs/ src/",
+    "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ripio/rcn-diaspore-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ripio/rcn-diaspore-sdk/issues"
+  },
+  "homepage": "https://github.com/ripio/rcn-diaspore-sdk/blob/master/README.md",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "devDependencies": {
+    "@types/ethereumjs-util": "^5.2.0",
+    "@types/jest": "^24.0.11",
+    "@types/lodash": "4.14.104",
+    "@types/node": "*",
+    "@types/uuid": "^3.4.4",
+    "@types/web3": "^1.0.14",
+    "@types/web3-provider-engine": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "@typescript-eslint/parser": "^1.6.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "case-sensitive-paths-webpack-plugin": "^2.1.2",
+    "coveralls": "^3.0.3",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^22.4.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.7.1",
+    "lint-staged": ">=8",
+    "prettier": "^1.16.4",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.0.1",
+    "ts-mockito": "^2.3.1",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typedoc": "0.13.0",
+    "typescript": "3.2.2",
+    "web3-provider-engine": "14.0.6",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "@0x/assert": "^2.0.9",
+    "@0x/json-schemas": "^3.0.9",
+    "@0x/subproviders": "^4.0.5",
+    "@0x/types": "^2.2.2",
+    "@0x/typescript-typings": "^4.2.2",
+    "@0x/utils": "^4.3.1",
+    "@0x/web3-wrapper": "^6.0.5",
+    "@jpgonzalezra/abi-wrappers": "1.0.0",
+    "@jpgonzalezra/diaspore-contract-artifacts": "1.0.0",
+    "ethereum-types": "^2.1.2",
+    "ethereumjs-blockstream": "6.0.0",
+    "ethereumjs-util": "^6.1.0",
+    "ethers": "^4.0.27",
+    "js-sha3": "^0.8.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.24.0",
+    "uuid": "^3.3.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint"
+  }
+}
