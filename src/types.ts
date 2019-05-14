@@ -2,7 +2,6 @@ import { TxData, TxDataPayable } from '@0x/web3-wrapper';
 import { ContractEventArg, DecodedLogArgs, LogWithDecodedArgs, BlockParam } from 'ethereum-types';
 import {
   LoanManagerContract,
-  NanoLoanModelContract,
   InstallmentsModelContract,
   DebtEngineContract,
   OracleAdapterContract,
@@ -13,7 +12,6 @@ import {
   ERC721BaseEventArgs,
   LoanManagerEvents,
   ModelEvents,
-  NanoLoanModelEvents,
   OracleEvents,
   DebtEngineEvents,
   IERC173Events,
@@ -21,7 +19,6 @@ import {
   InstallmentsModelEvents,
   LoanManagerEventArgs,
   ModelEventArgs,
-  NanoLoanModelEventArgs,
   OracleEventArgs
 
 } from '@jpgonzalezra/abi-wrappers';
@@ -47,11 +44,10 @@ export enum NetworkId {
 }
 
 export enum DiasporeContracts {
-  LoanManagerContract = "LoanManagerContract",
-  NanoLoanModelContract = "NanoLoanModelContract",
-  InstallmentsModelContract = "InstallmentsModelContract",
-  DebtEngineContract = "DebtEngineContract",
-  IERC20Contract = "IERC20Contract"
+  LoanManagerContract = "LOAN_MANAGER_ADDRESS",
+  InstallmentsModelContract = "INSTALLMENTS_ADDRESS",
+  DebtEngineContract = "DEBT_ENGINE_ADDRESS",
+  IERC20Contract = "ERC20_ADDRESS"
 }
 
 export interface DecodedLogEvent<ArgsType extends DecodedLogArgs> {
@@ -80,7 +76,6 @@ export type ContractEventArgs =
   | ERC721BaseEventArgs
   | LoanManagerEventArgs
   | ModelEventArgs
-  | NanoLoanModelEventArgs
   | OracleEventArgs
 
 export type ContractEvents = 
@@ -90,7 +85,6 @@ export type ContractEvents =
   | InstallmentsModelEvents
   | LoanManagerEvents
   | ModelEvents
-  | NanoLoanModelEvents
   | OracleEvents
   
 
