@@ -2,9 +2,8 @@ import * as _ from 'lodash';
 import { NetworkId } from '../types';
 
 const networkToAddresses: { [networkId: number]: string } = {
-  1: '...',
-  3: '...',
-  15: '...',
+  1: '',
+  3: '0xbfdb9397842776dbf3c0e3160e941d1542ab0365',
 };
 
 function getContractAddressesForNetworkOrThrow(networkId: NetworkId): string {
