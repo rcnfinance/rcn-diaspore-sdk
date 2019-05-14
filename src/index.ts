@@ -1,10 +1,9 @@
 export * from './types';
-export { DiasporeAPI } from './DiasporeAPI';
+export { DiasporeAPI } from './diaspore_api';
 export { BlockParamLiteral } from 'ethereum-types';
 
 export {
   LoanManagerContract,
-  NanoLoanModelContract,
   InstallmentsModelContract,
   DebtEngineContract,
   IERC20Contract
