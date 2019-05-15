@@ -408,24 +408,24 @@
     "@types/istanbul-reports" "^1.1.1"
     "@types/yargs" "^12.0.9"
 
-"@jpgonzalezra/abi-wrappers@1.0.8":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/abi-wrappers/-/abi-wrappers-1.0.8.tgz#e2185b6d14d941f7c5dbce2efc07ea984e51d6e5"
-  integrity sha512-6jAH05PepSmZftZNHVZ/KFihVsr8FOKGJxPNbeA74zlkgm9L0TdksJnIk+f12mQlYSb0h9fuDUnFjEbL2zeThA==
+"@jpgonzalezra/abi-wrappers@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/abi-wrappers/-/abi-wrappers-1.0.9.tgz#a5b7ece05a8e1bc174b1e143a9c5823d1ae7bb0e"
+  integrity sha512-Gg/fe3l0KQGFSYDiQ9mLToasJDs3njNKDj21s9GSVUEGXvocunBBFm2UexRJlNtvpciFaacN6x40dqjq62WDHQ==
   dependencies:
     "@0x/base-contract" "^5.0.5"
     "@0x/utils" "^4.3.1"
     "@0x/web3-wrapper" "^6.0.5"
-    "@jpgonzalezra/diaspore-contract-artifacts" "1.0.7"
+    "@jpgonzalezra/diaspore-contract-artifacts" "1.0.9"
     ethereum-types "^2.1.2"
     ethers "^4.0.27"
     lodash "^4.17.11"
     typescript "3.2.2"
 
-"@jpgonzalezra/diaspore-contract-artifacts@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.7.tgz#528e6bbbd9ec2a13c644467c5916c6bf6a3b64d3"
-  integrity sha512-ZanfTS8xQ/TDuYBBre/G3wcpCoz4hOUZ3+yeG5hFfrQt+Y3EEAb622XrUCpe+8ibulPpWCMQOv0heFpMD+zPvw==
+"@jpgonzalezra/diaspore-contract-artifacts@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
+  integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
 "@ledgerhq/devices@^4.55.0":
   version "4.55.0"
