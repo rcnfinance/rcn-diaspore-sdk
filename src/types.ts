@@ -20,8 +20,8 @@ import {
   LoanManagerEventArgs,
   ModelEventArgs,
   OracleEventArgs
-
 } from '@jpgonzalezra/abi-wrappers';
+import { RcnTokenEventArgs, RcnTokenEvents } from './contract_wrappers/tokens/rcn_token_wrapper'
 
 /**
  * @param txData Data to override default values on tx, i.e. 'from', 'gasPrice'
@@ -77,6 +77,7 @@ export type ContractEventArgs =
   | LoanManagerEventArgs
   | ModelEventArgs
   | OracleEventArgs
+  | RcnTokenEventArgs
 
 export type ContractEvents = 
   | DebtEngineEvents
@@ -86,6 +87,7 @@ export type ContractEvents =
   | LoanManagerEvents
   | ModelEvents
   | OracleEvents
+  | RcnTokenEvents
   
 
 /**
