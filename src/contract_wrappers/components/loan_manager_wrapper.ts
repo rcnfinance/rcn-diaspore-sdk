@@ -8,6 +8,8 @@ import { ContractAbi, LogWithDecodedArgs } from 'ethereum-types';
 import { schemas } from '@0x/json-schemas';
 import ContractWrapper from '../contract_wrapper';
 import assert from '../../utils/assert';
+import { BigNumber } from '@0x/utils';
+
 import {
   TxParams,
   GetLogsAsyncParams,
@@ -44,6 +46,10 @@ export default class LoanManagerWrapper extends ContractWrapper {
     super(web3Wrapper, contract);
     this.contract = contract;
   }
+
+  public requestLoan = async (amount: BigNumber, model:string, oracle: string, borrower:string, salt: BigNumber, expiration: BigNumber, data: string) => {
+    return (await this.contract).requestLoan.sendTransactionAsync(amount, model, oracle, borrower, salt, expiration, data)
+  };
 
   /**
    * Subscribe to an event type emitted by the contract.
@@ -87,10 +93,5 @@ export default class LoanManagerWrapper extends ContractWrapper {
     );
     return logs;
   };
-
-  /**
-   * business logic
-   */
-  //TODO:
 
 }
