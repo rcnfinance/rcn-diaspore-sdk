@@ -13,6 +13,7 @@ import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory  from './factories/token_wrapper_factory';
 import LoanManagerWrapper from './contract_wrappers/components/loan_manager_wrapper'
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
+import InstallmentsModelWrapper from './contract_wrappers/components/installments_model_wrapper';
 
 /**
  * @param provider The web3 provider
@@ -45,6 +46,11 @@ export class DiasporeAPI {
    * for interacting with diaspore smart contract.
    */
   public loanManagerWrapper: LoanManagerWrapper;
+  /**
+   * An instance of the InstallmentsModelWrapper class containing methods
+   * for interacting with diaspore smart contract.
+   */
+  public installmentModelWrapper: InstallmentsModelWrapper;
   /**
    * An instance of the RcnTokenWrapper class containing methods
    * for interacting with RcnToken smart contract.
@@ -90,8 +96,13 @@ export class DiasporeAPI {
 
     this.loanManagerWrapper = new LoanManagerWrapper(
       this.web3Wrapper,
-      this.contractFactory.getLoanManagerContract(),
+      this.contractFactory.getLoanManagerContract()
     );
+
+    this.installmentModelWrapper = new InstallmentsModelWrapper(
+      this.web3Wrapper,
+      this.contractFactory.getInstallmentsModelContract()
+    )
 
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
     this.tokenFactory = new TokenWrapperFactory(this.web3Wrapper, this.contractFactory);
