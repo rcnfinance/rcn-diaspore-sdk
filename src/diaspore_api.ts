@@ -10,16 +10,17 @@ import { BigNumber, providerUtils } from '@0x/utils';
 import { Provider } from 'ethereum-types';
 import assert from './utils/assert';
 import ContractFactory from './factories/contract_factory';
+import TokenWrapperFactory  from './factories/token_wrapper_factory';
 import LoanManagerWrapper from './contract_wrappers/components/loan_manager_wrapper'
+import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 
 /**
  * @param provider The web3 provider
- * @param loanManagerAddress The loanManagerAddress contract address '0x...'
+ * @param diasporeRegistryAddress The registry contract address '0x...'
  */
 export interface ApiConstructorParams {
   provider: Provider;
-  rcnTokenAddress: string;
-  loanManagerAddress: string;
+  diasporeRegistryAddress: string;
   defaultGasPrice?: BigNumber;
 }
 
@@ -44,7 +45,16 @@ export class DiasporeAPI {
    * for interacting with diaspore smart contract.
    */
   public loanManagerWrapper: LoanManagerWrapper;
-
+  /**
+   * An instance of the RcnTokenWrapper class containing methods
+   * for interacting with RcnToken smart contract.
+   */
+  public rcnToken: RcnTokenWrapper;
+  /**
+   * An instance of the TokenWrapperFactory class to get
+   * TokenWrapper instances to interact with ERC20 smart contracts
+   */
+  public tokenFactory: TokenWrapperFactory;
   
   private readonly web3Wrapper: Web3Wrapper;
   private contractFactory: ContractFactory;
@@ -55,8 +65,8 @@ export class DiasporeAPI {
    */
   public constructor(params: ApiConstructorParams) {
     providerUtils.standardizeOrThrow(params.provider);
-    if (params.rcnTokenAddress !== undefined) {
-      assert.isETHAddressHex('rcnTokenAddress', params.rcnTokenAddress);
+    if (params.diasporeRegistryAddress !== undefined) {
+      assert.isETHAddressHex('diasporeRegistryAddress', params.diasporeRegistryAddress);
     }
 
     this.web3Wrapper = new Web3Wrapper(params.provider, {
@@ -76,35 +86,17 @@ export class DiasporeAPI {
       },
     );
 
-    this.contractFactory = new ContractFactory(this.web3Wrapper, params.rcnTokenAddress);
+    this.contractFactory = new ContractFactory(this.web3Wrapper, params.diasporeRegistryAddress);
 
     this.loanManagerWrapper = new LoanManagerWrapper(
       this.web3Wrapper,
-      this.contractFactory.getLoanManagerContract(params.loanManagerAddress),
+      this.contractFactory.getLoanManagerContract(),
     );
 
-    /*this.rcnToken = new RCNTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
+    this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
     this.tokenFactory = new TokenWrapperFactory(this.web3Wrapper, this.contractFactory);
-    this.rcnTokenFaucet = new RcnTokenFaucetWrapper(
-      this.web3Wrapper,
-      this.contractFactory.getRcnTokenFaucetContract(),
-    );*/
+    
   }
-
-  /*public getRcnTokens = async (params: GetTokensParams): Promise<Response> => {
-    const networkId = await this.web3Wrapper.getNetworkIdAsync();
-    if (networkId === 1) {
-      throw new Error('Only for testnet');
-    }
-    assert.isNumber('amount', params.amount);
-    const address = params.address !== undefined ? params.address : await this.getAccount();
-    assert.isETHAddressHex('address', address);
-
-    return this.rcnTokenFaucet.getTokens({
-      amount: new BigNumber(params.amount),
-      recipient: address,
-    });
-  };*/
 
   /**
    * Get the account currently used by DiasporeApi
