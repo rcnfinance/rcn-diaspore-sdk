@@ -25,9 +25,9 @@ export default class TokenWrapperFactory {
   }
 
   /**
-   * @param address Security Token contract address
+   * @param address Rcn Token contract address
    *
-   * @memberof SecurityTokenWrapperFactory
+   * @memberof RCNTokenWrapperFactory
    */
   public getRcnTokenInstanceFromAddress = async (): Promise<ERC20TokenWrapper> => {
     const token = new RcnTokenWrapper(
