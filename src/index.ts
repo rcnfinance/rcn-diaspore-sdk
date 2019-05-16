@@ -6,5 +6,6 @@ export {
   LoanManagerContract,
   InstallmentsModelContract,
   DebtEngineContract,
-  IERC20Contract
+  IERC20Contract,
+  OracleContract
 } from '@jpgonzalezra/abi-wrappers';

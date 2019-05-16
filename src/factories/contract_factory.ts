@@ -4,6 +4,7 @@ import {
   DebtEngineContract,
   InstallmentsModelContract,
   RegistryContract,
+  OracleContract,
   IERC20Contract
 } from '@jpgonzalezra/abi-wrappers';
 import {
@@ -11,6 +12,7 @@ import {
   LoanManager,
   DebtEngine,
   Registry,
+  Oracle,
   InstallmentsModel
 } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
@@ -83,6 +85,19 @@ export default class ContractFactory {
     assert.isETHAddressHex('address', address);
     return new InstallmentsModelContract(
       InstallmentsModel.abi,
+      address,
+      this.provider,
+      this.contractDefaults,
+    );
+  }
+
+  public async getOracleContract(address?: string): Promise<OracleContract> {
+    if (address == undefined) {
+      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.Oracle);
+    }
+    assert.isETHAddressHex('address', address);
+    return new OracleContract(
+      Oracle.abi,
       address,
       this.provider,
       this.contractDefaults,
