@@ -48,7 +48,7 @@ export enum DiasporeContracts {
   InstallmentsModelContract = "diaspore/installments-model:1.0.0",
   DebtEngineContract = "diaspore/debt-engine:1.0.0",
   IERC20Contract = "rcn/token:1.0.0",
-  Oracle = "ripio/oracle:1.0.0"
+  OracleContract = "ripio/oracle:1.0.0"
 }
 
 export interface DecodedLogEvent<ArgsType extends DecodedLogArgs> {

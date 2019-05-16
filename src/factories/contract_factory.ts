@@ -54,7 +54,7 @@ export default class ContractFactory {
 
   public async getLoanManagerContract(address?: string): Promise<LoanManagerContract> {
     if (address == undefined) {
-      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.DebtEngineContract);
+      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.LoanManagerContract);
     }
     assert.isETHAddressHex('address', address);
     return new LoanManagerContract(
@@ -80,7 +80,7 @@ export default class ContractFactory {
 
   public async getInstallmentsModelContract(address?: string): Promise<InstallmentsModelContract> {
     if (address == undefined) {
-      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.DebtEngineContract);
+      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.InstallmentsModelContract);
     }
     assert.isETHAddressHex('address', address);
     return new InstallmentsModelContract(
@@ -93,7 +93,7 @@ export default class ContractFactory {
 
   public async getOracleContract(address?: string): Promise<OracleContract> {
     if (address == undefined) {
-      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.Oracle);
+      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.OracleContract);
     }
     assert.isETHAddressHex('address', address);
     return new OracleContract(
