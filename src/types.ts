@@ -44,10 +44,11 @@ export enum NetworkId {
 }
 
 export enum DiasporeContracts {
-  LoanManagerContract = "LOAN_MANAGER_ADDRESS",
-  InstallmentsModelContract = "INSTALLMENTS_ADDRESS",
-  DebtEngineContract = "DEBT_ENGINE_ADDRESS",
-  IERC20Contract = "ERC20_ADDRESS"
+  LoanManagerContract = "diaspore/loan-manager:1.0.0",
+  InstallmentsModelContract = "diaspore/installments-model:1.0.0",
+  DebtEngineContract = "diaspore/debt-engine:1.0.0",
+  IERC20Contract = "rcn/token:1.0.0",
+  Oracle = "ripio/oracle:1.0.0"
 }
 
 export interface DecodedLogEvent<ArgsType extends DecodedLogArgs> {
