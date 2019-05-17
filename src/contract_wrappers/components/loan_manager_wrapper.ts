@@ -1,6 +1,7 @@
 import {
   LoanManagerEventArgs,
-  LoanManagerEvents
+  LoanManagerEvents,
+  LoanManagerRequestedEventArgs
 } from '@jpgonzalezra/abi-wrappers';
 import { LoanManager } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
@@ -20,14 +21,39 @@ import {
 } from '../../types';
 import { LoanManagerContract } from '@jpgonzalezra/abi-wrappers';
 
+interface RequestedSubscribeAsyncParams extends SubscribeAsyncParams {
+  eventName: LoanManagerEvents.Requested;
+  callback: EventCallback<LoanManagerRequestedEventArgs>;
+}
+
 interface LoanManagerSubscribeAsyncParams extends Subscribe {
-  // Subscriptors TODO:
+  (params: RequestedSubscribeAsyncParams): Promise<string>;
 }
 
 interface LoanManagerLogsAsyncParams extends GetLogs {
   // logs TODO:
 }
 
+interface RequestLoanParams {
+  amount: BigNumber, 
+  model:string, 
+  oracle: string, 
+  borrower:string, 
+  salt: BigNumber, 
+  expiration: BigNumber, 
+  data: string
+}
+
+interface GetIdParams {
+  amount: BigNumber, 
+  borrower: string, 
+  creator: string, 
+  model: string, 
+  oracle: string, 
+  salt: BigNumber, 
+  expiration: BigNumber, 
+  data: string
+}
 
 /**
  * This class includes the functionality related to interacting with the LoanManager contract.
@@ -47,8 +73,29 @@ export default class LoanManagerWrapper extends ContractWrapper {
     this.contract = contract;
   }
 
-  public requestLoan = async (amount: BigNumber, model:string, oracle: string, borrower:string, salt: BigNumber, expiration: BigNumber, data: string) => {
-    return (await this.contract).requestLoan.sendTransactionAsync(amount, model, oracle, borrower, salt, expiration, data)
+  public calcId = async (params: GetIdParams) => {
+    return (await this.contract).calcId.callAsync(
+      params.amount, 
+      params.borrower, 
+      params.creator, 
+      params.model, 
+      params.oracle, 
+      params.salt, 
+      params.expiration, 
+      params.data
+    );
+  }
+
+  public requestLoan = async (params: RequestLoanParams) => {
+    return (await this.contract).requestLoan.sendTransactionAsync(
+      params.amount, 
+      params.model, 
+      params.oracle, 
+      params.borrower, 
+      params.salt, 
+      params.expiration, 
+      params.data
+    );
   };
 
   /**
