@@ -73,6 +73,51 @@ export default class LoanManagerWrapper extends ContractWrapper {
     this.contract = contract;
   }
 
+  /**
+   * Calls
+   */
+  public getBorrower = async (id: string) => {
+    return (await this.contract).getBorrower1.callAsync(id);
+  }
+
+  public getCreator = async (id: string) => {
+    return (await this.contract).getCreator1.callAsync(id);
+  }
+  public getOracle = async (id: string) => {
+    return (await this.contract).getOracle1.callAsync(id);
+  }
+  
+  public getCurrency = async (id: string) => {
+    return (await this.contract).getCurrency1.callAsync(id);
+  }
+  
+  public getAmount = async (id: string) => {
+    return (await this.contract).getAmount1.callAsync(id);
+  }
+  
+  public getExpirationRequest = async (id: string) => {
+    return (await this.contract).getExpirationRequest1.callAsync(id);
+  }
+  public getApproved = async (id: string) => {
+    return (await this.contract).getApproved1.callAsync(id);
+  }
+  
+  public getDueTime = async (id: string) => {
+    return (await this.contract).getDueTime1.callAsync(id);
+  }
+  
+  public getClosingObligation = async (id: string) => {
+    return (await this.contract).getClosingObligation1.callAsync(id);
+  }
+  
+  public getLoanData = async (id: string) => {
+    return (await this.contract).getLoanData1.callAsync(id);
+  }
+
+  public getStatus = async (id: string) => {
+    return (await this.contract).getStatus1.callAsync(id);
+  }
+  
   public calcId = async (params: GetIdParams) => {
     return (await this.contract).calcId.callAsync(
       params.amount, 
@@ -86,6 +131,10 @@ export default class LoanManagerWrapper extends ContractWrapper {
     );
   }
 
+  /**
+   *  Send Transactions
+   */
+
   public requestLoan = async (params: RequestLoanParams) => {
     return (await this.contract).requestLoan.sendTransactionAsync(
       params.amount, 
@@ -98,6 +147,9 @@ export default class LoanManagerWrapper extends ContractWrapper {
     );
   };
 
+  public approveRequest = async (id: string) => {
+    return (await this.contract).approveRequest.sendTransactionAsync(id);
+  }
   /**
    * Subscribe to an event type emitted by the contract.
    * @return Subscription token used later to unsubscribe
