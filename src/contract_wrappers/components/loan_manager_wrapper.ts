@@ -55,6 +55,19 @@ interface GetIdParams {
   data: string
 }
 
+interface LendRequestParams {
+  id: string,
+  oracleData: string, 
+  cosigner: string,
+  cosignerLimit: BigNumber, 
+  cosignerData: string
+}
+
+interface RegistreApproveRequestParams {
+  id: string,
+  signature: string
+}
+
 /**
  * This class includes the functionality related to interacting with the LoanManager contract.
  */
@@ -131,6 +144,9 @@ export default class LoanManagerWrapper extends ContractWrapper {
     );
   }
 
+  public isCanceled = async (id: string) => {
+    return (await this.contract).cancel.callAsync(id);
+  }
   /**
    *  Send Transactions
    */
@@ -150,6 +166,29 @@ export default class LoanManagerWrapper extends ContractWrapper {
   public approveRequest = async (id: string) => {
     return (await this.contract).approveRequest.sendTransactionAsync(id);
   }
+
+  public registerApproveRequest = async (params: RegistreApproveRequestParams) => {
+    return (await this.contract).registerApproveRequest.sendTransactionAsync(
+      params.id, 
+      params.signature
+    );
+  }
+
+  public lend = async (params: LendRequestParams) => {
+    return (await this.contract).lend.sendTransactionAsync(
+      params.id,
+      params.oracleData, 
+      params.cosigner,
+      params.cosignerLimit, 
+      params.cosignerData
+    );
+  }
+
+  public cancel = async (id: string) => {
+    return (await this.contract).cancel.sendTransactionAsync(id);
+  }
+  
+
   /**
    * Subscribe to an event type emitted by the contract.
    * @return Subscription token used later to unsubscribe
