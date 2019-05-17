@@ -58,7 +58,7 @@ export default class ContractFactory {
     }
     assert.isETHAddressHex('address', address);
     return new LoanManagerContract(
-      LoanManager.abi,
+      LoanManager.abi, 
       address,
       this.provider,
       this.contractDefaults,

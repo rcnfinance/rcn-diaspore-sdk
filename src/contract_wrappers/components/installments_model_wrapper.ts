@@ -51,6 +51,14 @@ export default class InstallmentsModelWrapper extends ContractWrapper {
     return (await this.contract).encodeData.callAsync(cuota, interestRate, installments, duration, timeUnit);
   };
 
+  public create = async (id: string, data: string) => {
+    return (await this.contract).create.sendTransactionAsync(id, data)
+  }
+
+  public isValid = async (data: string) => {
+    return (await this.contract).validate.callAsync(data);
+  } 
+
   /**
    * Subscribe to an event type emitted by the contract.
    * @return Subscription token used later to unsubscribe
