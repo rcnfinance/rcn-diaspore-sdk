@@ -4,7 +4,7 @@ import {
   Model,
   Cosigner,
 } from '@jpgonzalezra/diaspore-contract-artifacts';
-import { Response } from '@jpgonzalezra/abi-wrappers';
+import { Response, LoanManagerEvents } from '@jpgonzalezra/abi-wrappers';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { BigNumber, providerUtils } from '@0x/utils';
 import { Provider } from 'ethereum-types';
@@ -15,6 +15,9 @@ import LoanManagerWrapper from './contract_wrappers/components/loan_manager_wrap
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 import InstallmentsModelWrapper from './contract_wrappers/components/installments_model_wrapper';
 import OracleWrapper from './contract_wrappers/components/oracle_wrapper';
+import { ContractEventArg } from 'ethereum-types';
+import { EventCallback } from './types';
+
 
 
 /**
@@ -37,6 +40,19 @@ export interface GetBalanceParams {
 export interface GetTokensParams {
   amount: number;
   address?: string;
+}
+
+export interface RequestParams {
+  amount: BigNumber;
+  borrower: string; 
+  salt:BigNumber;
+  expiration:BigNumber;
+  cuota: BigNumber;
+  interestRate: BigNumber;
+  installments: BigNumber;
+  duration: BigNumber;
+  timeUnit: number | BigNumber;
+  callback: EventCallback<ContractEventArg>;
 }
 
 /**
@@ -119,6 +135,49 @@ export class DiasporeAPI {
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
     this.tokenFactory = new TokenWrapperFactory(this.web3Wrapper, this.contractFactory);
     
+  }
+
+  /**
+   * RequestLoan, this method execute installmentModelWrapper module
+   * @return Address string
+   */
+  public requestLoan = async (params: RequestParams) : Promise<string> => {
+    const model: string = await this.installmentModelWrapper.address();
+    const oracle: string = await this.oracleWrapper.address();
+
+    const data = await this.installmentModelWrapper.encodeData(
+      params.cuota, 
+      params.interestRate, 
+      params.installments, 
+      params.duration, 
+      params.timeUnit
+    );
+    const isValid: boolean = await this.installmentModelWrapper.isValid(data);
+    if (!isValid) {
+      throw new Error("request loan data is invalid");
+    }
+
+    const amount = params.amount;
+    const borrower = params.borrower;
+    const salt = params.salt;
+    const expiration = params.expiration;
+    await this.loanManagerWrapper.requestLoan({ 
+      amount, 
+      model, 
+      oracle, 
+      borrower, 
+      salt, 
+      expiration, 
+      data
+    });
+
+    const eventName = LoanManagerEvents.Requested;
+    const indexFilterValues = {};
+    
+    const callback = params.callback 
+    const isVerbose = false
+    const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
+    return subscription;
   }
 
   /**
