@@ -75,6 +75,7 @@
     "@0x/web3-wrapper": "^6.0.5",
     "@jpgonzalezra/abi-wrappers": "1.0.9",
     "@jpgonzalezra/diaspore-contract-artifacts": "1.0.9",
+    "axios": "^0.18.0",
     "ethereum-types": "^2.1.2",
     "ethereumjs-blockstream": "6.0.0",
     "ethereumjs-util": "^6.1.0",

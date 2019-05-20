@@ -9,6 +9,9 @@ import { schemas } from '@0x/json-schemas';
 import ContractWrapper from '../contract_wrapper';
 import assert from '../../utils/assert';
 import { BigNumber } from '@0x/utils';
+import axios, { AxiosResponse } from 'axios';
+import * as ethUtil from 'ethereumjs-util';
+
 
 import {
   TxParams,
@@ -35,6 +38,7 @@ interface OracleLogsAsyncParams extends GetLogs {
 export default class OracleWrapper extends ContractWrapper {
   public abi: ContractAbi = Oracle.abi;
 
+  private static PATH: string = 'https://oracle.ripio.com/rate/'; 
   protected contract: Promise<OracleContract>;
 
   /**
@@ -45,6 +49,21 @@ export default class OracleWrapper extends ContractWrapper {
   public constructor(web3Wrapper: Web3Wrapper, contract: Promise<OracleContract>) {
     super(web3Wrapper, contract);
     this.contract = contract;
+  }
+
+  public async getOracleData(currency: string): Promise<string> {
+    
+    const currencyHex: string = ethUtil.bufferToHex(new Buffer(ethUtil.setLengthRight(currency, 32)));
+    return axios.get(OracleWrapper.PATH).then(response => {
+        let data = '0x'; 
+        response.data.forEach(function(item: any) {
+          if (item.currency === currencyHex) {
+            data = item.data;
+          }
+        })
+        return data;
+    })
+
   }
 
   /**
