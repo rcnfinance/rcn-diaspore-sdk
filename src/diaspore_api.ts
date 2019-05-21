@@ -138,10 +138,10 @@ export class DiasporeAPI {
   }
 
   /**
-   * RequestLoan, this method execute installmentModelWrapper module
+   * request, this method execute loanManagerWrapper and installmentModelWrapper module
    * @return Address string
    */
-  public requestLoan = async (params: RequestParams) : Promise<string> => {
+  public request = async (params: RequestParams) : Promise<string> => {
     const model: string = await this.installmentModelWrapper.address();
     const oracle: string = await this.oracleWrapper.address();
 
@@ -178,6 +178,37 @@ export class DiasporeAPI {
     const isVerbose = false
     const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
     return subscription;
+  }
+
+  /**
+   * lend, this method execute oracleWrapper and loanManagerWrapper module
+   * @return Address string
+   */
+  public lend = async (id: string) => {
+
+    const oracleData: string = await this.oracleWrapper.getOracleData("ETH");
+    const cosigner: string = '0x0000000000000000000000000000000000000000';
+    const cosignerLimit: BigNumber = new BigNumber(0);
+    const cosignerData: string = '0x0000000000000000000000000000000000000000';
+
+    const request = { 
+      id,
+      oracleData, 
+      cosigner,
+      cosignerLimit, 
+      cosignerData
+    }
+
+    await this.loanManagerWrapper.lend(request);
+
+  }
+
+  /**
+   * lend, this method execute oracleWrapper and loanManagerWrapper module
+   * @return Address string
+   */
+  public approveRequest = async (id: string) => {
+    return await this.loanManagerWrapper.approveRequest(id);
   }
 
   /**
