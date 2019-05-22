@@ -84,9 +84,15 @@ export class DiasporeAPI {
    * TokenWrapper instances to interact with ERC20 smart contracts
    */
   public tokenFactory: TokenWrapperFactory;
-  
-  private readonly web3Wrapper: Web3Wrapper;
+  /**
+   * An instance of the ContractFactory class to get
+   * contract instances to interact with smart contracts
+   */
   private contractFactory: ContractFactory;
+  /**
+   * An instance of web3Wrapper
+   */
+  private readonly web3Wrapper: Web3Wrapper;
 
   /**
    * Instantiates a new DiasporeAPI instance.
@@ -121,6 +127,7 @@ export class DiasporeAPI {
       this.web3Wrapper,
       this.contractFactory.getLoanManagerContract()
     );
+    this.tokenFactory = new TokenWrapperFactory(this.web3Wrapper, this.contractFactory);
 
     this.installmentModelWrapper = new InstallmentsModelWrapper(
       this.web3Wrapper,
@@ -132,9 +139,7 @@ export class DiasporeAPI {
       this.contractFactory.getOracleContract()
       )
 
-    this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
-    this.tokenFactory = new TokenWrapperFactory(this.web3Wrapper, this.contractFactory);
-    
+    this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());   
   }
 
   /**
@@ -184,12 +189,12 @@ export class DiasporeAPI {
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
    */
-  public lend = async (id: string) => {
+  public lend = async (id: string, value: BigNumber) => {
 
-    const oracleData: string = await this.oracleWrapper.getOracleData("ETH");
+    const oracleData: string = await this.oracleWrapper.getOracleData("ARS");
     const cosigner: string = '0x0000000000000000000000000000000000000000';
     const cosignerLimit: BigNumber = new BigNumber(0);
-    const cosignerData: string = '0x0000000000000000000000000000000000000000';
+    const cosignerData: string = '0x';
 
     const request = { 
       id,
@@ -199,6 +204,14 @@ export class DiasporeAPI {
       cosignerData
     }
 
+    
+    const spender: string = await this.loanManagerWrapper.address()
+    const owner: string = await this.getAccount()
+
+    const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
+    if (!allowance.isEqualTo(value)) { 
+      await this.rcnToken.approve({ spender, value })
+    }
     await this.loanManagerWrapper.lend(request);
 
   }
