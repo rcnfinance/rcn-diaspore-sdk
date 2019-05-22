@@ -1,7 +1,9 @@
 import {
   LoanManagerEventArgs,
   LoanManagerEvents,
-  LoanManagerRequestedEventArgs
+  LoanManagerRequestedEventArgs,
+  LoanManagerApprovedEventArgs,
+  LoanManagerCanceledEventArgs
 } from '@jpgonzalezra/abi-wrappers';
 import { LoanManager } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
@@ -26,8 +28,20 @@ interface RequestedSubscribeAsyncParams extends SubscribeAsyncParams {
   callback: EventCallback<LoanManagerRequestedEventArgs>;
 }
 
+interface ApprovedSubscribeAsyncParams extends SubscribeAsyncParams {
+  eventName: LoanManagerEvents.Approved;
+  callback: EventCallback<LoanManagerApprovedEventArgs>;
+}
+
+interface CanceledSubscribeAsyncParams extends SubscribeAsyncParams {
+  eventName: LoanManagerEvents.Canceled;
+  callback: EventCallback<LoanManagerCanceledEventArgs>;
+}
+
 interface LoanManagerSubscribeAsyncParams extends Subscribe {
   (params: RequestedSubscribeAsyncParams): Promise<string>;
+  (params: ApprovedSubscribeAsyncParams): Promise<string>;
+  (params: CanceledSubscribeAsyncParams): Promise<string>;
 }
 
 interface LoanManagerLogsAsyncParams extends GetLogs {
@@ -152,6 +166,7 @@ export default class LoanManagerWrapper extends ContractWrapper {
    */
 
   public requestLoan = async (params: RequestLoanParams) => {
+    
     return (await this.contract).requestLoan.sendTransactionAsync(
       params.amount, 
       params.model, 
