@@ -4,7 +4,7 @@ import {
   Model,
   Cosigner,
 } from '@jpgonzalezra/diaspore-contract-artifacts';
-import { Response, LoanManagerEvents } from '@jpgonzalezra/abi-wrappers';
+import { Response, LoanManagerEvents, DebtEngineEvents } from '@jpgonzalezra/abi-wrappers';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { BigNumber, providerUtils } from '@0x/utils';
 import { Provider } from 'ethereum-types';
@@ -14,9 +14,10 @@ import TokenWrapperFactory  from './factories/token_wrapper_factory';
 import LoanManagerWrapper from './contract_wrappers/components/loan_manager_wrapper'
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 import InstallmentsModelWrapper from './contract_wrappers/components/installments_model_wrapper';
+import DebtEngineWrapper from './contract_wrappers/components/debt_engine_wrapper';
 import OracleWrapper from './contract_wrappers/components/oracle_wrapper';
 import { ContractEventArg } from 'ethereum-types';
-import { EventCallback } from './types';
+import { EventCallback, ContractEvents, SubscribeAsyncParams } from './types';
 
 
 
@@ -60,10 +61,21 @@ export interface LendParams {
   value: BigNumber;
   callback: EventCallback<ContractEventArg>;
 }
+
+export interface PayParams {
+  id: string;
+  amount: BigNumber;
+  origin: string;
+  callback: EventCallback<ContractEventArg>;
+}
 /**
  * The DiasporeAPI class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
 export class DiasporeAPI {
+  static readonly CURRENCY = 'ARS';
+  static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
+
+
   /**
    * An instance of the LoanManagerWrapper class containing methods
    * for interacting with diaspore smart contract.
@@ -74,6 +86,11 @@ export class DiasporeAPI {
    * for interacting with diaspore smart contract.
    */
   public installmentModelWrapper: InstallmentsModelWrapper;
+  /**
+   * An instance of the OracleWrapper class containing methods
+   * for interacting with diaspore smart contract.
+   */
+  public debtEngineModelWrapper: DebtEngineWrapper;
   /**
    * An instance of the OracleWrapper class containing methods
    * for interacting with diaspore smart contract.
@@ -139,10 +156,15 @@ export class DiasporeAPI {
       this.contractFactory.getInstallmentsModelContract()
     )
 
+    this.debtEngineModelWrapper = new DebtEngineWrapper(
+      this.web3Wrapper,
+      this.contractFactory.getDebtEngineContract()
+    )
+
     this.oracleWrapper = new OracleWrapper(
       this.web3Wrapper,
       this.contractFactory.getOracleContract()
-      )
+    )
 
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());   
   }
@@ -164,7 +186,7 @@ export class DiasporeAPI {
     );
     const isValid: boolean = await this.installmentModelWrapper.isValid(data);
     if (!isValid) {
-      throw new Error("request loan data is invalid");
+      throw new Error("The request loan data is invalid");
     }
 
     const amount = params.amount;
@@ -181,11 +203,8 @@ export class DiasporeAPI {
       data
     });
 
-    const eventName = LoanManagerEvents.Requested;
-    const indexFilterValues = {};
-    const callback = params.callback 
-    const isVerbose = false
-    const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
+    const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Requested, params.callback );
+    const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
     return subscription;
   }
 
@@ -195,8 +214,8 @@ export class DiasporeAPI {
    */
   public lend = async (params: LendParams) => {
 
-    const oracleData: string = await this.oracleWrapper.getOracleData("ARS");
-    const cosigner: string = '0x0000000000000000000000000000000000000000';
+    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAPI.CURRENCY);
+    const cosigner: string = DiasporeAPI.ADDRESS0;
     const cosignerLimit: BigNumber = new BigNumber(0);
     const cosignerData: string = '0x';
 
@@ -219,21 +238,34 @@ export class DiasporeAPI {
 
     await this.loanManagerWrapper.lend(request);
 
-    const eventName = LoanManagerEvents.Lent;
-    const indexFilterValues = {};
-    const callback = params.callback 
-    const isVerbose = false
-    const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
+    const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Lent, params.callback );
+    const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
     return subscription;
 
+  }
+
+  /**
+   * pay, this method execute ...
+   * @return Address string
+   */
+  public pay = async (params: PayParams) => {
+
+    //TODO: 
+
+    const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Paid, params.callback );
+    const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
+    return subscription;
   }
 
   /**
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
    */
-  public approveRequest = async (id: string) => {
-    return await this.loanManagerWrapper.approveRequest(id);
+  public approveRequest = async (id: string, callback: EventCallback<ContractEventArg>) => {
+    const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Approved, callback );
+    const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
+    await this.loanManagerWrapper.approveRequest(id);
+    return subscription
   }
 
   /**
@@ -260,4 +292,10 @@ export class DiasporeAPI {
   public isTestnet = async (): Promise<boolean> => {
     return (await this.web3Wrapper.getNetworkIdAsync()) !== 1;
   };
+
+  private getSubscribeAsyncParams(eventName: ContractEvents, callback: EventCallback<ContractEventArg>): SubscribeAsyncParams {
+    const indexFilterValues = {};
+    const isVerbose = false
+    return { eventName, indexFilterValues, callback, isVerbose }
+  }
 }
