@@ -55,6 +55,11 @@ export interface RequestParams {
   callback: EventCallback<ContractEventArg>;
 }
 
+export interface LendParams {
+  id: string;
+  value: BigNumber;
+  callback: EventCallback<ContractEventArg>;
+}
 /**
  * The DiasporeAPI class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
@@ -178,7 +183,6 @@ export class DiasporeAPI {
 
     const eventName = LoanManagerEvents.Requested;
     const indexFilterValues = {};
-    
     const callback = params.callback 
     const isVerbose = false
     const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
@@ -189,13 +193,15 @@ export class DiasporeAPI {
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
    */
-  public lend = async (id: string, value: BigNumber) => {
+  public lend = async (params: LendParams) => {
 
     const oracleData: string = await this.oracleWrapper.getOracleData("ARS");
     const cosigner: string = '0x0000000000000000000000000000000000000000';
     const cosignerLimit: BigNumber = new BigNumber(0);
     const cosignerData: string = '0x';
 
+    const id: string = params.id;
+    const value: BigNumber = params.value;
     const request = { 
       id,
       oracleData, 
@@ -203,16 +209,22 @@ export class DiasporeAPI {
       cosignerLimit, 
       cosignerData
     }
-
     
     const spender: string = await this.loanManagerWrapper.address()
     const owner: string = await this.getAccount()
-
     const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
     if (!allowance.isEqualTo(value)) { 
-      await this.rcnToken.approve({ spender, value })
+      throw new Error("Error sending tokens to borrower. ");
     }
+
     await this.loanManagerWrapper.lend(request);
+
+    const eventName = LoanManagerEvents.Lent;
+    const indexFilterValues = {};
+    const callback = params.callback 
+    const isVerbose = false
+    const subscription: string = await this.loanManagerWrapper.subscribeAsync({ eventName, indexFilterValues, callback, isVerbose })
+    return subscription;
 
   }
 
