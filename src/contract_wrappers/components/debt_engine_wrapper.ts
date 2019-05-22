@@ -1,7 +1,8 @@
 import {
   DebtEngineEventArgs,
   DebtEngineEvents,
-  DebtEnginePaidEventArgs
+  DebtEnginePaidEventArgs,
+  DebtEngineWithdrawnEventArgs
 } from '@jpgonzalezra/abi-wrappers';
 import { DebtEngine } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
@@ -24,13 +25,19 @@ import {
 } from '../../types';
 import { DebtEngineContract } from '@jpgonzalezra/abi-wrappers';
 
-interface DebtEnginePaidSubscribeAsyncParams extends Subscribe {
+interface DebtEngineWithdrawSubscribeAsyncParams extends SubscribeAsyncParams {
+  eventName: DebtEngineEvents.Withdrawn;
+  callback: EventCallback<DebtEngineWithdrawnEventArgs>;
+}
+
+interface DebtEnginePaidSubscribeAsyncParams extends SubscribeAsyncParams {
   eventName: DebtEngineEvents.Paid;
   callback: EventCallback<DebtEnginePaidEventArgs>;
 }
 
 interface DebtEngineSubscribeAsyncParams extends Subscribe {
   (params: DebtEnginePaidSubscribeAsyncParams): Promise<string>;
+  (params: DebtEngineWithdrawSubscribeAsyncParams): Promise<string>;
 }
 
 interface DebtEngineLogsAsyncParams extends GetLogs {
@@ -58,6 +65,10 @@ export default class DebtEngineWrapper extends ContractWrapper {
   }
 
 
+  public withdraw = async (id: string, to: string) => {
+    return (await this.contract).withdraw.sendTransactionAsync(id, to);
+  }
+  
   /**
    * Subscribe to an event type emitted by the contract.
    * @return Subscription token used later to unsubscribe

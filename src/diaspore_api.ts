@@ -68,6 +68,12 @@ export interface PayParams {
   origin: string;
   callback: EventCallback<ContractEventArg>;
 }
+
+export interface WithdrawParams {
+  id: string;
+  to: string;
+  callback: EventCallback<ContractEventArg>;
+}
 /**
  * The DiasporeAPI class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
@@ -87,7 +93,7 @@ export class DiasporeAPI {
    */
   public installmentModelWrapper: InstallmentsModelWrapper;
   /**
-   * An instance of the OracleWrapper class containing methods
+   * An instance of the DebtEngineWrapper class containing methods
    * for interacting with diaspore smart contract.
    */
   public debtEngineModelWrapper: DebtEngineWrapper;
@@ -245,18 +251,32 @@ export class DiasporeAPI {
   }
 
   /**
-   * pay, this method execute ...
+   * pay, this method execute debtEngineModelWrapper and oracleWrapper module
    * @return Address string
    */
   public pay = async (params: PayParams) => {
 
-    //TODO: 
+    //TODO: MAKE
 
     const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Paid, params.callback );
     const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
     return subscription;
   }
 
+  /**
+   * withdraw, this method execute loanManagerWrapper module
+   * @return Address string
+   */
+  public withdraw = async (params: WithdrawParams) => {
+
+    //TODO: MAKE
+
+    const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Withdrawn, params.callback );
+    const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
+    return subscription;
+
+  }
+  
   /**
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
