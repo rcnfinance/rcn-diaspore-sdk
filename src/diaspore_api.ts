@@ -74,6 +74,10 @@ export interface WithdrawParams {
   to: string;
   callback: EventCallback<ContractEventArg>;
 }
+
+export interface WithdrawPartialParams extends WithdrawParams {
+  amount: BigNumber;
+}
 /**
  * The DiasporeAPI class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
@@ -264,12 +268,39 @@ export class DiasporeAPI {
   }
 
   /**
+   * pay, this method execute debtEngineModelWrapper and oracleWrapper module
+   * @return Address string
+   */
+  public payToken = async (params: PayParams) => {
+
+    //TODO: MAKE
+
+    const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Paid, params.callback );
+    const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
+    return subscription;
+  }
+
+  /**
    * withdraw, this method execute loanManagerWrapper module
    * @return Address string
    */
   public withdraw = async (params: WithdrawParams) => {
 
-    //TODO: MAKE
+    await this.debtEngineModelWrapper.withdraw(params.id, params.to)
+
+    const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Withdrawn, params.callback );
+    const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
+    return subscription;
+
+  }
+
+  /**
+   * withdraw, this method execute loanManagerWrapper module
+   * @return Address string
+   */
+  public withdrawPartial = async (params: WithdrawPartialParams) => {
+
+    await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount)
 
     const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Withdrawn, params.callback );
     const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
