@@ -6,8 +6,8 @@ import { InstallmentsModel } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { ContractAbi, LogWithDecodedArgs } from 'ethereum-types';
 import { schemas } from '@0x/json-schemas';
-import ContractWrapper from '../contract_wrapper';
-import assert from '../../utils/assert';
+import ContractWrapper from '../../contract_wrapper';
+import assert from '../../../utils/assert';
 import { BigNumber } from '@0x/utils';
 
 import {
@@ -17,7 +17,7 @@ import {
   EventCallback,
   Subscribe,
   GetLogs,
-} from '../../types';
+} from '../../../types';
 import { InstallmentsModelContract } from '@jpgonzalezra/abi-wrappers';
 
 interface InstallmentsModelSubscribeAsyncParams extends Subscribe {

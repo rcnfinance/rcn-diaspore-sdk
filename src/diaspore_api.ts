@@ -4,20 +4,23 @@ import {
   Model,
   Cosigner,
 } from '@jpgonzalezra/diaspore-contract-artifacts';
-import { Response, LoanManagerEvents, DebtEngineEvents } from '@jpgonzalezra/abi-wrappers';
+import { LoanManagerEvents, DebtEngineEvents } from '@jpgonzalezra/abi-wrappers';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { BigNumber, providerUtils } from '@0x/utils';
 import { Provider } from 'ethereum-types';
+import { Provider as MarmoProvider, Wallet } from 'marmojs';
+
 import assert from './utils/assert';
 import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory  from './factories/token_wrapper_factory';
-import LoanManagerWrapper from './contract_wrappers/components/loan_manager_wrapper'
+import LoanManagerWrapper from './contract_wrappers/components/web3/loan_manager_wrapper'
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
-import InstallmentsModelWrapper from './contract_wrappers/components/installments_model_wrapper';
-import DebtEngineWrapper from './contract_wrappers/components/debt_engine_wrapper';
-import OracleWrapper from './contract_wrappers/components/oracle_wrapper';
+import InstallmentsModelWrapper from './contract_wrappers/components/web3/installments_model_wrapper';
+import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
+import OracleWrapper from './contract_wrappers/components/web3/oracle_wrapper';
 import { ContractEventArg } from 'ethereum-types';
 import { EventCallback, ContractEvents, SubscribeAsyncParams } from './types';
+import LoanManagerMarmoWrapper from './contract_wrappers/components/marm3/loan_manager_marmo_wrapper';
 
 
 
@@ -29,6 +32,8 @@ export interface ApiConstructorParams {
   provider: Provider;
   diasporeRegistryAddress: string;
   defaultGasPrice?: BigNumber;
+  marmoProvider?: MarmoProvider
+  wallet?: Wallet
 }
 
 /**
@@ -54,6 +59,7 @@ export interface RequestParams {
   duration: BigNumber;
   timeUnit: number | BigNumber;
   callback: EventCallback<ContractEventArg>;
+  withMarmo: boolean;
 }
 
 export interface LendParams {
@@ -88,9 +94,14 @@ export class DiasporeAPI {
 
   /**
    * An instance of the LoanManagerWrapper class containing methods
-   * for interacting with diaspore smart contract.
+   * for interacting with diaspore smart contract using web3.
    */
   public loanManagerWrapper: LoanManagerWrapper;
+  /**
+   * An instance of the LoanManagerMarmoWrapper class containing methods
+   * for interacting with diaspore smart contract using marm3.
+   */
+  public loanManagerMarmoWrapper?: LoanManagerMarmoWrapper;
   /**
    * An instance of the InstallmentsModelWrapper class containing methods
    * for interacting with diaspore smart contract.
@@ -177,6 +188,11 @@ export class DiasporeAPI {
     )
 
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());   
+
+    if (params.marmoProvider !== undefined && params.wallet !== undefined) {
+      this.loanManagerMarmoWrapper = new LoanManagerMarmoWrapper("0x50c544d5d44d603695ed221421b8cb5a78681f15", params.wallet, params.marmoProvider)
+    }
+
   }
 
   /**
@@ -203,7 +219,8 @@ export class DiasporeAPI {
     const borrower = params.borrower;
     const salt = params.salt;
     const expiration = params.expiration;
-    await this.loanManagerWrapper.requestLoan({ 
+
+    const request = { 
       amount, 
       model, 
       oracle, 
@@ -211,7 +228,14 @@ export class DiasporeAPI {
       salt, 
       expiration, 
       data
-    });
+    }
+
+    if (params.withMarmo && this.loanManagerMarmoWrapper !== undefined) {
+      await this.loanManagerMarmoWrapper.requestLoan(request);
+      return "0";
+    }
+
+    await this.loanManagerWrapper.requestLoan(request);
 
     const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Requested, params.callback );
     const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
