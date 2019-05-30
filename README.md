@@ -13,7 +13,7 @@ npm install @ripio/diaspore-contract-wrappers --save
 **Import**
 
 ```javascript
-import { DiasporeAPI } from '@ripio/rcn-diaspore-sdk';
+import { DiasporeWeb3API } from '@ripio/rcn-diaspore-sdk';
 ```
 
 If your project is in [TypeScript](https://www.typescriptlang.org/), add the following to your `tsconfig.json`:
@@ -100,16 +100,16 @@ yarn jest
 
 ```js
 const providerEngine: Provider = await getProviderEngine();
-const params: ApiConstructorParams = {
+const params: DiasporeWeb3API = {
     provider: providerEngine,
     diasporeRegistryAddress: '0xbfdb9397842776dbf3c0e3160e941d1542ab0365',
 };
-const diasporeApi = new DiasporeAPI(params)
+const DiasporeWeb3API = new DiasporeWeb3API(params)
 
 const amount: BigNumber = new BigNumber(140);
 const salt: BigNumber = new BigNumber(1);
 const expiration: BigNumber = new BigNumber(Math.floor(new Date().getTime() + 86400 * 365));
-const borrower: string = await diasporeApi.getAccount();
+const borrower: string = await DiasporeWeb3API.getAccount();
 const cuota: BigNumber = new BigNumber(140);
 const interestRate: BigNumber = new BigNumber(toInterestRate(240));
 const installments: BigNumber = new BigNumber(10);
@@ -124,6 +124,6 @@ const callback = (err: any, log: any) => {
   }
 }
 const requestParam = { amount, borrower, salt, expiration, cuota, interestRate, installments, duration, timeUnit, callback }
-const idSubscription: string = await diasporeApi.requestLoan(requestParam);
+const idSubscription: string = await DiasporeWeb3API.requestLoan(requestParam);
 
 ```

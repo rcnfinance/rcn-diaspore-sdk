@@ -8,8 +8,8 @@ import { DebtEngine } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { ContractAbi, LogWithDecodedArgs } from 'ethereum-types';
 import { schemas } from '@0x/json-schemas';
-import ContractWrapper from '../contract_wrapper';
-import assert from '../../utils/assert';
+import ContractWrapper from './../../contract_wrapper';
+import assert from '../../../utils/assert';
 import { BigNumber } from '@0x/utils';
 import axios, { AxiosResponse } from 'axios';
 import * as ethUtil from 'ethereumjs-util';
@@ -22,7 +22,7 @@ import {
   EventCallback,
   Subscribe,
   GetLogs,
-} from '../../types';
+} from '../../../types';
 import { DebtEngineContract } from '@jpgonzalezra/abi-wrappers';
 
 interface DebtEngineWithdrawSubscribeAsyncParams extends SubscribeAsyncParams {
