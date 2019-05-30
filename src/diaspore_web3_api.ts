@@ -18,7 +18,16 @@ import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_w
 import OracleWrapper from './contract_wrappers/components/web3/oracle_wrapper';
 import { ContractEventArg } from 'ethereum-types';
 import { EventCallback, ContractEvents, SubscribeAsyncParams } from './types';
-import { RequestParams, DiasporeApi, LendParams } from './diaspore_api'
+import { 
+  RequestWithCallBackParams, 
+  DiasporeApi, 
+  LendWithCallBackParams, 
+  PayWithCallBackParams, 
+  GetBalanceParams,
+  WithdrawParams,
+  WithdrawPartialParams,
+  ApproveRequestWithCallBackParams 
+} from './diaspore_api'
 
 /**
  * @param provider The web3 provider
@@ -30,34 +39,6 @@ export interface Web3DiasporeWeb3API {
   defaultGasPrice?: BigNumber;
 }
 
-/**
- * @param address (optional) Account address
- */
-export interface GetBalanceParams {
-  address?: string;
-}
-
-export interface GetTokensParams {
-  amount: number;
-  address?: string;
-}
-
-export interface PayParams {
-  id: string;
-  amount: BigNumber;
-  origin: string;
-  callback: EventCallback<ContractEventArg>;
-}
-
-export interface WithdrawParams {
-  id: string;
-  to: string;
-  callback: EventCallback<ContractEventArg>;
-}
-
-export interface WithdrawPartialParams extends WithdrawParams {
-  amount: BigNumber;
-}
 /**
  * The DiasporeWeb3API class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
@@ -163,7 +144,7 @@ export class DiasporeWeb3API implements DiasporeApi {
    * request, this method execute loanManagerWrapper and installmentModelWrapper module
    * @return Address string
    */
-  public request = async (params: RequestParams) : Promise<string> => {
+  public request = async (params: RequestWithCallBackParams) : Promise<string> => {
     const model: string = await this.installmentModelWrapper.address();
     const oracle: string = await this.oracleWrapper.address();
 
@@ -202,7 +183,7 @@ export class DiasporeWeb3API implements DiasporeApi {
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
    */
-  public lend = async (params: LendParams) => {
+  public lend = async (params: LendWithCallBackParams) => {
 
     const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeWeb3API.CURRENCY);
     const cosigner: string = DiasporeWeb3API.ADDRESS0;
@@ -238,7 +219,7 @@ export class DiasporeWeb3API implements DiasporeApi {
    * pay, this method execute debtEngineModelWrapper and oracleWrapper module
    * @return Address string
    */
-  public pay = async (params: PayParams) => {
+  public pay = async (params: PayWithCallBackParams) => {
 
     //TODO: MAKE
 
@@ -251,7 +232,7 @@ export class DiasporeWeb3API implements DiasporeApi {
    * pay, this method execute debtEngineModelWrapper and oracleWrapper module
    * @return Address string
    */
-  public payToken = async (params: PayParams) => {
+  public payToken = async (params: PayWithCallBackParams) => {
 
     //TODO: MAKE
 
@@ -292,10 +273,11 @@ export class DiasporeWeb3API implements DiasporeApi {
    * lend, this method execute oracleWrapper and loanManagerWrapper module
    * @return Address string
    */
-  public approveRequest = async (id: string, callback: EventCallback<ContractEventArg>) => {
-    const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Approved, callback );
+  public approveRequest = async (params: ApproveRequestWithCallBackParams) => {
+    await this.loanManagerWrapper.approveRequest(params.id);
+
+    const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Approved, params.callback );
     const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
-    await this.loanManagerWrapper.approveRequest(id);
     return subscription
   }
 
