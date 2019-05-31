@@ -1,6 +1,6 @@
 export * from './types';
 
-export { DiasporeApi } from './diaspore_api';
+export { DiasporeAPI } from './diaspore_api';
 export { DiasporeMarmoAPI } from './diaspore_marmo_api';
 export { DiasporeWeb3API } from './diaspore_web3_api';
 export { BlockParamLiteral } from 'ethereum-types';

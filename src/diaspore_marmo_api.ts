@@ -1,15 +1,39 @@
 import {
     RequestParams,
-    DiasporeApi,
     LendParams,
     PayParams,
-    GetBalanceParams,
     WithdrawParams,
     WithdrawPartialParams,
-    ApproveRequestParams
+    ApproveRequestParams,
+    DiasporeWeb3CostructorParams
 } from './diaspore_api'
 
-export class DiasporeMarmoAPI implements DiasporeApi {
+import { Wallet, Provider } from 'marmojs';
+import assert from './utils/assert';
+import { DiasporeAbstractAPI } from './diaspore_abstract_api';
+
+/**
+ * @param provider The Marmo3 provider
+ * @param wallet The wallet for sign
+ */
+export interface DiasporeMarmoCostructorParams extends DiasporeWeb3CostructorParams {
+    subProvider: Provider;
+    wallet: Wallet;
+}
+
+export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
+
+   /**
+     * Instantiates a new DiasporeMarmoAPI instance.
+     * @return  An instance of the DiasporeMarmoCostructorParams class.
+     */
+    public constructor(params: DiasporeMarmoCostructorParams) {
+        super(params)
+        if (params.diasporeRegistryAddress !== undefined) {
+            assert.isETHAddressHex('diasporeRegistryAddress', params.diasporeRegistryAddress);
+        }
+
+    }
 
     public request = async (params: RequestParams): Promise<string> => {
         //TODO: implement
@@ -36,18 +60,6 @@ export class DiasporeMarmoAPI implements DiasporeApi {
     }
 
     public approveRequest = async (params: ApproveRequestParams) => {
-        //TODO: implement
-    }
-
-    public getAccount = async (): Promise<string> => {
-        //TODO: implement
-    }
-
-    public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
-        //TODO: implement
-    }
-
-    public isTestnet = async (): Promise<boolean> => {
         //TODO: implement
     }
 

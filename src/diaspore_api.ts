@@ -1,6 +1,19 @@
 import { BigNumber } from '@0x/utils';
 import { EventCallback } from './types';
 import { ContractEventArg } from 'ethereum-types';
+import { Provider } from 'ethereum-types';
+
+export interface DiasporeConstructorParams {
+    diasporeRegistryAddress: string;
+    defaultGasPrice?: BigNumber;
+}
+
+/**
+ * @param provider The web3 provider
+ */
+export interface DiasporeWeb3ConstructorParams extends DiasporeConstructorParams {
+    provider: Provider;
+}
 
 export interface RequestParams {
     amount: BigNumber;
@@ -28,6 +41,13 @@ export interface LendWithCallBackParams extends LendParams {
 }
 
 /**
+ * @param provider The web3 provider
+ */
+export interface DiasporeWeb3CostructorParams extends DiasporeConstructorParams {
+    provider: Provider;
+}
+
+/**
  * @param address (optional) Account address
  */
 export interface GetBalanceParams {
@@ -42,14 +62,14 @@ export interface GetTokensParams {
 export interface PayParams {
     id: string;
     amount: BigNumber;
-    origin: string;    
+    origin: string;
 }
 
 export interface PayWithCallBackParams extends PayParams {
     id: string;
     amount: BigNumber;
     origin: string;
-    callback: EventCallback<ContractEventArg>;    
+    callback: EventCallback<ContractEventArg>;
 }
 
 export interface WithdrawParams {
@@ -74,7 +94,7 @@ export interface ApproveRequestWithCallBackParams extends ApproveRequestParams {
     callback: EventCallback<ContractEventArg>;
 }
 
-export interface DiasporeApi {
+export interface DiasporeAPI {
 
     request(params: RequestParams): Promise<string>
 

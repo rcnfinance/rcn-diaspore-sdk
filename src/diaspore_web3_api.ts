@@ -4,10 +4,8 @@ import {
   Model,
   Cosigner,
 } from '@jpgonzalezra/diaspore-contract-artifacts';
-import { Response, LoanManagerEvents, DebtEngineEvents } from '@jpgonzalezra/abi-wrappers';
-import { Web3Wrapper } from '@0x/web3-wrapper';
+import { LoanManagerEvents, DebtEngineEvents } from '@jpgonzalezra/abi-wrappers';
 import { BigNumber, providerUtils } from '@0x/utils';
-import { Provider } from 'ethereum-types';
 import assert from './utils/assert';
 import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory  from './factories/token_wrapper_factory';
@@ -20,86 +18,31 @@ import { ContractEventArg } from 'ethereum-types';
 import { EventCallback, ContractEvents, SubscribeAsyncParams } from './types';
 import { 
   RequestWithCallBackParams, 
-  DiasporeApi, 
   LendWithCallBackParams, 
   PayWithCallBackParams, 
-  GetBalanceParams,
   WithdrawParams,
   WithdrawPartialParams,
-  ApproveRequestWithCallBackParams 
+  ApproveRequestWithCallBackParams,
+  DiasporeWeb3ConstructorParams 
 } from './diaspore_api'
-
-/**
- * @param provider The web3 provider
- * @param diasporeRegistryAddress The registry contract address '0x...'
- */
-export interface Web3DiasporeWeb3API {
-  provider: Provider;
-  diasporeRegistryAddress: string;
-  defaultGasPrice?: BigNumber;
-}
+import { DiasporeAbstractAPI } from './diaspore_abstract_api'
 
 /**
  * The DiasporeWeb3API class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
  */
-export class DiasporeWeb3API implements DiasporeApi {
-  static readonly CURRENCY = 'ARS';
-  static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
-
-
-  /**
-   * An instance of the LoanManagerWrapper class containing methods
-   * for interacting with diaspore smart contract.
-   */
-  public loanManagerWrapper: LoanManagerWrapper;
-  /**
-   * An instance of the InstallmentsModelWrapper class containing methods
-   * for interacting with diaspore smart contract.
-   */
-  public installmentModelWrapper: InstallmentsModelWrapper;
-  /**
-   * An instance of the DebtEngineWrapper class containing methods
-   * for interacting with diaspore smart contract.
-   */
-  public debtEngineModelWrapper: DebtEngineWrapper;
-  /**
-   * An instance of the OracleWrapper class containing methods
-   * for interacting with diaspore smart contract.
-   */
-  public oracleWrapper: OracleWrapper;
-  /**
-   * An instance of the RcnTokenWrapper class containing methods
-   * for interacting with RcnToken smart contract.
-   */
-  public rcnToken: RcnTokenWrapper;
-  /**
-   * An instance of the TokenWrapperFactory class to get
-   * TokenWrapper instances to interact with ERC20 smart contracts
-   */
-  public tokenFactory: TokenWrapperFactory;
-  /**
-   * An instance of the ContractFactory class to get
-   * contract instances to interact with smart contracts
-   */
-  private contractFactory: ContractFactory;
-  /**
-   * An instance of web3Wrapper
-   */
-  private readonly web3Wrapper: Web3Wrapper;
+export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   /**
    * Instantiates a new DiasporeWeb3API instance.
-   * @return  An instance of the DiasporeWeb3API class.
+   * @return  An instance of the DiasporeWeb3CostructorParams class.
    */
-  public constructor(params: Web3DiasporeWeb3API) {
+  public constructor(params: DiasporeWeb3ConstructorParams) {
+    super(params)
+
     providerUtils.standardizeOrThrow(params.provider);
     if (params.diasporeRegistryAddress !== undefined) {
       assert.isETHAddressHex('diasporeRegistryAddress', params.diasporeRegistryAddress);
     }
-
-    this.web3Wrapper = new Web3Wrapper(params.provider, {
-      gasPrice: params.defaultGasPrice,
-    });
 
     const artifactsArray = [
       LoanManager,
@@ -280,31 +223,6 @@ export class DiasporeWeb3API implements DiasporeApi {
     const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
     return subscription
   }
-
-  /**
-   * Get the account currently used by DiasporeWeb3API
-   * @return Address string
-   */
-  public getAccount = async (): Promise<string> => {
-    return (await this.web3Wrapper.getAvailableAddressesAsync())[0];
-  };
-
-  /**
-   * Get the ETH balance
-   * @return Balance BigNumber
-   */
-  public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
-    const addr = params.address !== undefined ? params.address : await this.getAccount();
-    assert.isETHAddressHex('address', addr);
-    return this.web3Wrapper.getBalanceInWeiAsync(addr);
-  };
-
-  /**
-   * Is it Testnet network?
-   */
-  public isTestnet = async (): Promise<boolean> => {
-    return (await this.web3Wrapper.getNetworkIdAsync()) !== 1;
-  };
 
   private getSubscribeAsyncParams(eventName: ContractEvents, callback: EventCallback<ContractEventArg>): SubscribeAsyncParams {
     const indexFilterValues = {};
