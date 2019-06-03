@@ -11,7 +11,8 @@ import {
   RequestParams,
   PayParams,
   LendParams,
-  ApproveRequestParams
+  ApproveRequestParams,
+  RequestLoanParams
 } from './diaspore_api'
 
 import {
@@ -36,7 +37,7 @@ import { Web3Wrapper } from '@0x/web3-wrapper';
 /**
  * The DiasporeAbstractAPI abstract class contains abtract components.
  */
-export abstract class DiasporeAbstractAPI implements DiasporeApi {
+export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
   static readonly CURRENCY = 'ARS';
   static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
@@ -143,6 +144,38 @@ export abstract class DiasporeAbstractAPI implements DiasporeApi {
   public abstract withdraw(params: WithdrawParams): void
 
   public abstract withdrawPartial(params: WithdrawPartialParams): void
+
+  protected async createRequestLoanParam(params: RequestParams): Promise<RequestLoanParams> {
+    const model: string = await this.installmentModelWrapper.address();
+    const oracle: string = await this.oracleWrapper.address();
+
+    const data = await this.installmentModelWrapper.encodeData(
+      params.cuota,
+      params.interestRate,
+      params.installments,
+      params.duration,
+      params.timeUnit
+    );
+    const isValid: boolean = await this.installmentModelWrapper.isValid(data);
+    if (!isValid) {
+      throw new Error("The request loan data is invalid");
+    }
+
+    const amount = params.amount;
+    const borrower = params.borrower;
+    const salt = params.salt;
+    const expiration = params.expiration;
+
+    return {
+      amount,
+      model,
+      oracle,
+      borrower,
+      salt,
+      expiration,
+      data
+    }
+  }
 
   /**
    * Get the account currently used by DiasporeWeb3API

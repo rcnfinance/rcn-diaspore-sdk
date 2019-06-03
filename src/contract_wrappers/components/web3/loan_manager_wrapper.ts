@@ -5,6 +5,7 @@ import {
   LoanManagerApprovedEventArgs,
   LoanManagerCanceledEventArgs
 } from '@jpgonzalezra/abi-wrappers';
+import { RequestLoanParams } from './../../../diaspore_api'
 import { LoanManager } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { Web3Wrapper } from '@0x/web3-wrapper';
 import { ContractAbi, LogWithDecodedArgs } from 'ethereum-types';
@@ -46,16 +47,6 @@ interface LoanManagerSubscribeAsyncParams extends Subscribe {
 
 interface LoanManagerLogsAsyncParams extends GetLogs {
   // logs TODO:
-}
-
-interface RequestLoanParams {
-  amount: BigNumber, 
-  model:string, 
-  oracle: string, 
-  borrower:string, 
-  salt: BigNumber, 
-  expiration: BigNumber, 
-  data: string
 }
 
 interface GetIdParams {

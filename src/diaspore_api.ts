@@ -31,6 +31,16 @@ export interface RequestWithCallBackParams extends RequestParams {
     callback: EventCallback<ContractEventArg>;
 }
 
+export interface RequestLoanParams {
+    amount: BigNumber,
+    model: string,
+    oracle: string,
+    borrower: string,
+    salt: BigNumber,
+    expiration: BigNumber,
+    data: string
+}
+
 export interface LendParams {
     id: string;
     value: BigNumber;

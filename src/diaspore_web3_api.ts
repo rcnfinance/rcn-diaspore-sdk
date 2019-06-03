@@ -26,6 +26,7 @@ import {
   DiasporeWeb3ConstructorParams 
 } from './diaspore_api'
 import { DiasporeAbstractAPI } from './diaspore_abstract_api'
+import { baToJSON } from 'ethereumjs-util';
 
 /**
  * The DiasporeWeb3API class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.
@@ -84,34 +85,9 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
   }
 
   public request = async (params: RequestWithCallBackParams) : Promise<string> => {
-    const model: string = await this.installmentModelWrapper.address();
-    const oracle: string = await this.oracleWrapper.address();
-
-    const data = await this.installmentModelWrapper.encodeData(
-      params.cuota, 
-      params.interestRate, 
-      params.installments, 
-      params.duration, 
-      params.timeUnit
-    );
-    const isValid: boolean = await this.installmentModelWrapper.isValid(data);
-    if (!isValid) {
-      throw new Error("The request loan data is invalid");
-    }
-
-    const amount = params.amount;
-    const borrower = params.borrower;
-    const salt = params.salt;
-    const expiration = params.expiration;
-    await this.loanManagerWrapper.requestLoan({ 
-      amount, 
-      model, 
-      oracle, 
-      borrower, 
-      salt, 
-      expiration, 
-      data
-    });
+    
+    const request = await this.createRequestLoanParam(params);
+    await this.loanManagerWrapper.requestLoan(request);
 
     const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Requested, params.callback );
     const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
