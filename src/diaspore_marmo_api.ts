@@ -8,6 +8,7 @@ import {
     DiasporeWeb3CostructorParams
 } from './diaspore_api'
 
+import LoanManagerMarmoWrapper from './contract_wrappers/components/marmo/loan_manager_wrapper';
 import { Wallet, Provider } from 'marmojs';
 import assert from './utils/assert';
 import { DiasporeAbstractAPI } from './diaspore_abstract_api';
@@ -23,20 +24,35 @@ export interface DiasporeMarmoCostructorParams extends DiasporeWeb3CostructorPar
 
 export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
-   /**
-     * Instantiates a new DiasporeMarmoAPI instance.
-     * @return  An instance of the DiasporeMarmoCostructorParams class.
-     */
+    /**
+    * An instance of the LoanManagerWrapper class containing methods
+   * for interacting with diaspore smart contract.
+   */
+    public loanManagerMarmoWrapper: LoanManagerMarmoWrapper;
+
+    /**
+      * Instantiates a new DiasporeMarmoAPI instance.
+      * @return  An instance of the DiasporeMarmoCostructorParams class.
+      */
     public constructor(params: DiasporeMarmoCostructorParams) {
         super(params)
         if (params.diasporeRegistryAddress !== undefined) {
             assert.isETHAddressHex('diasporeRegistryAddress', params.diasporeRegistryAddress);
         }
 
+        this.loanManagerMarmoWrapper = new LoanManagerMarmoWrapper(
+            this.loanManagerWrapper,
+            this.contractFactory.getLoanManagerContractAddress(),
+            params.wallet,
+            params.subProvider
+        );
+
     }
 
     public request = async (params: RequestParams): Promise<string> => {
-        //TODO: implement
+        const request = await this.createRequestLoanParam(params);
+        await this.loanManagerMarmoWrapper.requestLoan(request);
+        return Promise.resolve<string>("intentId");
     }
 
     public lend = async (params: LendParams) => {

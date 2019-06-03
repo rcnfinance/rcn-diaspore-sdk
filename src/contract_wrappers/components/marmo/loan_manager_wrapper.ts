@@ -52,7 +52,7 @@ export default class LoanManagerMarmoWrapper {
    * @param web3Wrapper Web3Wrapper instance to use
    * @param contract
    */
-  public constructor(loanManagerWrapper: LoanManagerWrapper, address: string, wallet: Wallet, provider: Provider) {
+  public constructor(loanManagerWrapper: LoanManagerWrapper, address: Promise<string>, wallet: Wallet, provider: Provider) {
     this.contract = new LoanManagerMarmoContract(address, wallet, provider);
     this.wrapper = loanManagerWrapper;
   }

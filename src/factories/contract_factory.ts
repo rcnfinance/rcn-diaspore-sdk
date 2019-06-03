@@ -54,7 +54,7 @@ export default class ContractFactory {
 
   public async getLoanManagerContract(address?: string): Promise<LoanManagerContract> {
     if (address == undefined) {
-      address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.LoanManagerContract);
+      address = await this.getLoanManagerContractAddress();
     }
     assert.isETHAddressHex('address', address);
     return new LoanManagerContract(
@@ -63,6 +63,10 @@ export default class ContractFactory {
       this.provider,
       this.contractDefaults,
     );
+  }
+
+  public async getLoanManagerContractAddress(): Promise<string> {
+    return await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.LoanManagerContract);
   }
 
   public async getDebtEngineContract(address?: string): Promise<DebtEngineContract> {
