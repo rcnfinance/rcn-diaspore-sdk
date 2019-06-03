@@ -427,6 +427,18 @@
   resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
   integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
+"@jpgonzalezra/marmo-abi-wrappers@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.0.tgz#18ad945bfb2fa659e484bf30dc0804c6371ad5b5"
+  integrity sha512-/ljeiyjZ6fQXtbvxDXIFZM01E0zM0/Xe99IBSfX4ca6N5hkMWXIhf0sy1fhyJo+ZbsNZTgJgF0O42y0n6oubbA==
+  dependencies:
+    "@0x/utils" "^4.3.1"
+    ethereum-types "^2.1.2"
+    ethers "^4.0.27"
+    lodash "^4.17.11"
+    marmojs "0.2.6"
+    typescript "3.2.2"
+
 "@ledgerhq/devices@^4.55.0":
   version "4.55.0"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-4.55.0.tgz#c1fb7e33d38f2352f4991ea9fa4987e90238ee21"
@@ -6852,7 +6864,7 @@ marked@^0.4.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
 
-marmojs@^0.2.6:
+marmojs@0.2.6, marmojs@^0.2.6:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.6.tgz#56f420de22f172237214ccf7b43ac1e7a14c6a05"
   integrity sha512-Y+zMczJV3Gzhvj8FuLKT22GflPufSjrY/zl7qEf7jKUzf6slABacuFSGzAcFcxIeDOrW7JKAMwMzqicZwU5Ubw==
