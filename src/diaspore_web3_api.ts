@@ -83,10 +83,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());   
   }
 
-  /**
-   * request, this method execute loanManagerWrapper and installmentModelWrapper module
-   * @return Address string
-   */
   public request = async (params: RequestWithCallBackParams) : Promise<string> => {
     const model: string = await this.installmentModelWrapper.address();
     const oracle: string = await this.oracleWrapper.address();
@@ -122,10 +118,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     return subscription;
   }
 
-  /**
-   * lend, this method execute oracleWrapper and loanManagerWrapper module
-   * @return Address string
-   */
   public lend = async (params: LendWithCallBackParams) => {
 
     const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeWeb3API.CURRENCY);
@@ -158,10 +150,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   }
 
-  /**
-   * pay, this method execute debtEngineModelWrapper and oracleWrapper module
-   * @return Address string
-   */
   public pay = async (params: PayWithCallBackParams) => {
 
     //TODO: MAKE
@@ -171,10 +159,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     return subscription;
   }
 
-  /**
-   * pay, this method execute debtEngineModelWrapper and oracleWrapper module
-   * @return Address string
-   */
   public payToken = async (params: PayWithCallBackParams) => {
 
     //TODO: MAKE
@@ -184,10 +168,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     return subscription;
   }
 
-  /**
-   * withdraw, this method execute loanManagerWrapper module
-   * @return Address string
-   */
   public withdraw = async (params: WithdrawParams) => {
 
     await this.debtEngineModelWrapper.withdraw(params.id, params.to)
@@ -198,10 +178,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   }
 
-  /**
-   * withdraw, this method execute loanManagerWrapper module
-   * @return Address string
-   */
   public withdrawPartial = async (params: WithdrawPartialParams) => {
 
     await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount)
@@ -212,10 +188,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   }
   
-  /**
-   * lend, this method execute oracleWrapper and loanManagerWrapper module
-   * @return Address string
-   */
   public approveRequest = async (params: ApproveRequestWithCallBackParams) => {
     await this.loanManagerWrapper.approveRequest(params.id);
 
