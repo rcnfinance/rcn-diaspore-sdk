@@ -1,6 +1,6 @@
 
 import {
-  DiasporeApi,
+  DiasporeAPI,
   DiasporeWeb3CostructorParams
 } from './diaspore_api'
 
