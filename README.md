@@ -93,37 +93,8 @@ yarn jest
 
 ** Pending, should run a prepublish script on CI or use Semantic Releases**
 
-
 ## Examples
 
-### RequestLoan
-
-```js
-const providerEngine: Provider = await getProviderEngine();
-const params: DiasporeWeb3API = {
-    provider: providerEngine,
-    diasporeRegistryAddress: '0xbfdb9397842776dbf3c0e3160e941d1542ab0365',
-};
-const DiasporeWeb3API = new DiasporeWeb3API(params)
-
-const amount: BigNumber = new BigNumber(140);
-const salt: BigNumber = new BigNumber(1);
-const expiration: BigNumber = new BigNumber(Math.floor(new Date().getTime() + 86400 * 365));
-const borrower: string = await DiasporeWeb3API.getAccount();
-const cuota: BigNumber = new BigNumber(140);
-const interestRate: BigNumber = new BigNumber(toInterestRate(240));
-const installments: BigNumber = new BigNumber(10);
-const duration: BigNumber = new BigNumber(86400 * 30 * 10);
-const timeUnit: number | BigNumber = new BigNumber(86400 * 30); // secInDay * secInMonth
-
-const callback = (err: any, log: any) => {
-  if (err) {
-      console.log(err)
-  } else {
-      console.log("subscription response: ", log)
-  }
-}
-const requestParam = { amount, borrower, salt, expiration, cuota, interestRate, installments, duration, timeUnit, callback }
-const idSubscription: string = await DiasporeWeb3API.requestLoan(requestParam);
-
+```
+https://gist.github.com/jpgonzalezra/b3dc8405a7d2e804dcaf10d75c12856e
 ```
