@@ -27,8 +27,8 @@ export class DiasporeFactory {
     }
 
     public static getMarmoDiasporeAPI(
-        mainProvider: Provider,
         diasporeRegistryAddress: string,
+        mainProvider: Provider,
         subProvider: MarmoProvider,
         wallet: Wallet,
         defaultGasPrice?: BigNumber): DiasporeMarmoAPI {
