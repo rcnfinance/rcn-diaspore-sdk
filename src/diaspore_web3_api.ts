@@ -26,7 +26,6 @@ import {
   DiasporeWeb3ConstructorParams 
 } from './diaspore_api'
 import { DiasporeAbstractAPI } from './diaspore_abstract_api'
-import { baToJSON } from 'ethereumjs-util';
 
 /**
  * The DiasporeWeb3API class contains smart contract wrappers helpful to interact with rcn diaspore ecosystem.

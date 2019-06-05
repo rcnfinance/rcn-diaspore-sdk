@@ -1,10 +1,6 @@
 import { TxData, TxDataPayable } from '@0x/web3-wrapper';
 import { ContractEventArg, DecodedLogArgs, LogWithDecodedArgs, BlockParam } from 'ethereum-types';
 import {
-  LoanManagerContract,
-  InstallmentsModelContract,
-  DebtEngineContract,
-  OracleAdapterContract,
   IERC20Contract,
   DebtEngineEventArgs,
   IERC173EventArgs,
