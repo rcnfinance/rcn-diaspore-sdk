@@ -23,7 +23,8 @@ import {
   WithdrawParams,
   WithdrawPartialParams,
   ApproveRequestWithCallBackParams,
-  DiasporeWeb3ConstructorParams 
+  DiasporeWeb3ConstructorParams, 
+  GetBalanceParams,
 } from './diaspore_api'
 import { DiasporeAbstractAPI } from './diaspore_abstract_api'
 
@@ -170,6 +171,24 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     const subscription: string = await this.loanManagerWrapper.subscribeAsync(subscribeParams)
     return subscription
   }
+
+  /**
+   * Get the account currently used by DiasporeWeb3API
+   * @return Address string
+   */
+  public getAccount = async (): Promise<string> => {
+    return (await this.web3Wrapper.getAvailableAddressesAsync())[0];
+  };
+
+  /**
+   * Get the ETH balance
+   * @return Balance BigNumber
+   */
+  public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
+    const addr = params.address !== undefined ? params.address : await this.getAccount();
+    assert.isETHAddressHex('address', addr);
+    return this.web3Wrapper.getBalanceInWeiAsync(addr);
+  };
 
   private getSubscribeAsyncParams(eventName: ContractEvents, callback: EventCallback<ContractEventArg>): SubscribeAsyncParams {
     const indexFilterValues = {};

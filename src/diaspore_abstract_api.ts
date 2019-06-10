@@ -1,28 +1,21 @@
-
 import {
   DiasporeAPI,
-  DiasporeWeb3CostructorParams
-} from './diaspore_api'
-
-import {
-  GetBalanceParams,
+  DiasporeWeb3CostructorParams,
   WithdrawParams,
   WithdrawPartialParams,
   RequestParams,
   PayParams,
   LendParams,
   ApproveRequestParams,
-  RequestLoanParams
+  RequestLoanParams,
+  GetBalanceParams
 } from './diaspore_api'
-
 import {
   LoanManager,
   DebtEngine,
   Model,
   Cosigner,
 } from '@jpgonzalezra/diaspore-contract-artifacts';
-
-import assert from './utils/assert';
 import { BigNumber } from '@0x/utils';
 import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory from './factories/token_wrapper_factory';
@@ -145,6 +138,10 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
   public abstract withdrawPartial(params: WithdrawPartialParams): void
 
+  public abstract getBalance(params: GetBalanceParams): Promise<BigNumber>
+
+  public abstract getAccount(): Promise<string>
+
   protected async createRequestLoanParam(params: RequestParams): Promise<RequestLoanParams> {
     const model: string = await this.installmentModelWrapper.address();
     const oracle: string = await this.oracleWrapper.address();
@@ -176,24 +173,6 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
       data
     }
   }
-
-  /**
-   * Get the account currently used by DiasporeWeb3API
-   * @return Address string
-   */
-  public getAccount = async (): Promise<string> => {
-    return (await this.web3Wrapper.getAvailableAddressesAsync())[0];
-  };
-
-  /**
-   * Get the ETH balance
-   * @return Balance BigNumber
-   */
-  public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
-    const addr = params.address !== undefined ? params.address : await this.getAccount();
-    assert.isETHAddressHex('address', addr);
-    return this.web3Wrapper.getBalanceInWeiAsync(addr);
-  };
 
   /**
    * Is it Testnet network?
