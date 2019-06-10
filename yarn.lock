@@ -427,17 +427,17 @@
   resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
   integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
-"@jpgonzalezra/marmo-abi-wrappers@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.2.tgz#b95935deff8415327d8f1b4a9df26b620d42a069"
-  integrity sha512-QXTFO0yWHgXYnTsqClN8uZQSVS/eJUeS/HQP4Goi99xYipmvaKPHvkFWUKOmlYJRxPJ47mtLL7jdkBRmJUdLYw==
+"@jpgonzalezra/marmo-abi-wrappers@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.9.tgz#37f0040b8eb3e55e96b7bd3dc90b4c4005224d5b"
+  integrity sha512-uc/nqkbzMeIjduqfv2FMsy76P2r9vCIPyXy6OIutK6YOTN2FkWevdZRB7nDEZlxioeTaXtmBlSY1usllX+6kpw==
   dependencies:
     "@0x/utils" "^4.3.1"
     axios "^0.19.0"
     ethereum-types "^2.1.2"
     ethers "^4.0.27"
     lodash "^4.17.11"
-    marmojs "0.2.8"
+    marmojs "0.2.9"
     typescript "3.2.2"
 
 "@ledgerhq/devices@^4.55.0":
@@ -6885,10 +6885,10 @@ marked@^0.4.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
 
-marmojs@0.2.8, marmojs@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.8.tgz#80d60ca7ae17c8f094ad02dfe284e9104ed48f19"
-  integrity sha512-7SsdKUhkRCf4tmlRgWl0Iomx9W+j2XZNmHiheFXBylJs8CaOxKLL8VBZnXCPLyjDG9688TBdmq9Mm9Tp8v2ePA==
+marmojs@0.2.9, marmojs@^0.2.9:
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.9.tgz#8d7a04d0fe84df3fe9269fb1bbda701c8d7794cd"
+  integrity sha512-g64ZZNGW5RITufygn+8iDVOTo72BiL/LJAPVzaXFBjD1JeBuftnS2vJo1fzEGeVL9MZv3dj+OqG0H8pYCo2CcA==
   dependencies:
     "@types/chai" "^4.1.7"
     "@types/ethereumjs-abi" "^0.6.1"
