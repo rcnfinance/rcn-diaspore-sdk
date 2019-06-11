@@ -44,7 +44,7 @@ export default class LoanManagerMarmoWrapper {
 
 
   protected wrapper: LoanManagerWrapper;
-  protected contract: Promise<LoanManagerMarmoContract>;
+  protected contract: LoanManagerMarmoContract;
 
 
   /**
@@ -53,7 +53,7 @@ export default class LoanManagerMarmoWrapper {
    * @param contract
    */
   public constructor(loanManagerWrapper: LoanManagerWrapper, address: Promise<string>, wallet: Wallet, provider: Provider) {
-    this.contract = Promise.resolve<LoanManagerMarmoContract>(new LoanManagerMarmoContract(address, wallet, provider));
+    this.contract = new LoanManagerMarmoContract(address, wallet, provider);
     this.wrapper = loanManagerWrapper;
   }
 
@@ -114,7 +114,7 @@ export default class LoanManagerMarmoWrapper {
    *  Send Transactions
    */
   public requestLoan = async (params: RequestLoanParams) => {
-    (await this.contract).requestLoan.sendTransactionAsync(
+    this.contract.requestLoan(
       params.amount,
       params.model, 
       params.oracle, 
