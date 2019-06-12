@@ -13,7 +13,7 @@ import LoanManagerWrapper from './contract_wrappers/components/web3/loan_manager
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 import InstallmentsModelWrapper from './contract_wrappers/components/web3/installments_model_wrapper';
 import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
-import OracleWrapper from './contract_wrappers/components/web3/oracle_wrapper';
+import OracleWrapper from './contract_wrappers/components/common/oracle_wrapper';
 import { ContractEventArg } from 'ethereum-types';
 import { EventCallback, ContractEvents, SubscribeAsyncParams } from './types';
 import { 
@@ -77,7 +77,6 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     )
 
     this.oracleWrapper = new OracleWrapper(
-      this.web3Wrapper,
       this.contractFactory.getOracleContract()
     )
 

@@ -123,23 +123,28 @@ export default class LoanManagerMarmoWrapper {
       params.expiration, 
       params.data
     );
-  
   }
 
   public approveRequest = async (id: string) => {
-    // TODO:
+    this.contract.approveRequest(id);
   }
 
   public registerApproveRequest = async (params: RegistreApproveRequestParams) => {
-    // TODO:
+    this.contract.registerApproveRequest(params.id, params.signature);
   }
 
   public lend = async (params: LendRequestParams) => {
-    // TODO:
+    this.contract.lend(
+      params.id, 
+      params.oracleData, 
+      params.cosigner, 
+      params.cosignerLimit, 
+      params.cosignerData
+    )
   }
 
   public cancel = async (id: string) => {
-    // TODO:
+    this.contract.cancel(id)
   }
 
 }

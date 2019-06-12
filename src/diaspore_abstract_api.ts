@@ -23,7 +23,7 @@ import LoanManagerWrapper from './contract_wrappers/components/web3/loan_manager
 import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 import InstallmentsModelWrapper from './contract_wrappers/components/web3/installments_model_wrapper';
 import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
-import OracleWrapper from './contract_wrappers/components/web3/oracle_wrapper';
+import OracleWrapper from './contract_wrappers/components/common/oracle_wrapper';
 
 import { Web3Wrapper } from '@0x/web3-wrapper';
 
@@ -117,7 +117,6 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
     )
 
     this.oracleWrapper = new OracleWrapper(
-      this.web3Wrapper,
       this.contractFactory.getOracleContract()
     )
 
