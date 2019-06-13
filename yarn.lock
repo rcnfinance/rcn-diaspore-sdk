@@ -427,10 +427,10 @@
   resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
   integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
-"@jpgonzalezra/marmo-abi-wrappers@^1.0.13":
-  version "1.0.13"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.13.tgz#dadd3c5775205fc591bc1ac4ee10f3f40f21c7f2"
-  integrity sha512-hEbwNc8rlV/mEK/jBZKtaUcD7/fkcz0zmvnjF5HHtD8ls4bnqEKIMZeudWWlf+Wn3vgHORTtYL/WSvKJH8IW4w==
+"@jpgonzalezra/marmo-abi-wrappers@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.14.tgz#1a953f1735f6726cf8388a70990ec509ddc8d335"
+  integrity sha512-K1+Z+LrpBAQOL7Zw+m1DdyyUrKh0JAgyXDw7CoBQvN2fGpv6IlFxZG4XGydWwrjV7ZKOMkzqihUsqAHYE+qNKQ==
   dependencies:
     "@0x/utils" "^4.3.1"
     axios "^0.19.0"
