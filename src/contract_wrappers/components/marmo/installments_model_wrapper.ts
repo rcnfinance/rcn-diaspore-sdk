@@ -13,7 +13,6 @@ export default class InstallmentsModelMarmoWrapper {
   protected wrapper: InstallmentsModelWrapper;
   protected contract: InstallmentsModelMarmoContract;
 
-
   /**
    * Instantiate InstallmenstModelWrapper
    * @param web3Wrapper Web3Wrapper instance to use
