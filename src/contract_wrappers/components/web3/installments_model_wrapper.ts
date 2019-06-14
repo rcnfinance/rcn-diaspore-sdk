@@ -20,13 +20,9 @@ import {
 } from '../../../types';
 import { InstallmentsModelContract } from '@jpgonzalezra/abi-wrappers';
 
-interface InstallmentsModelSubscribeAsyncParams extends Subscribe {
-  // Subscriptors TODO:
-}
+interface InstallmentsModelSubscribeAsyncParams extends Subscribe {}
 
-interface InstallmentsModelLogsAsyncParams extends GetLogs {
-  // logs TODO:
-}
+interface InstallmentsModelLogsAsyncParams extends GetLogs {}
 
 
 /**

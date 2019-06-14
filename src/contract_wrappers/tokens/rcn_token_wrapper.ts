@@ -92,16 +92,6 @@ export default class RcnTokenWrapper extends ERC20TokenWrapper {
     );
   };
 
-  /*(public decreaseApproval = async (params: ChangeApprovalParams) => {
-    assert.isETHAddressHex('spender', params.spender);
-    return (await this.contract).decreaseApproval.sendTransactionAsync(
-      params.spender,
-      params.value,
-      params.txData,
-      params.safetyFactor,
-    );
-  };*/
-
   /**
    * Subscribe to an event type emitted by the contract.
    * @return Subscription token used later to unsubscribe

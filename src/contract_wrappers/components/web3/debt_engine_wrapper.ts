@@ -11,8 +11,6 @@ import { schemas } from '@0x/json-schemas';
 import ContractWrapper from './../../contract_wrapper';
 import assert from '../../../utils/assert';
 import { BigNumber } from '@0x/utils';
-import axios, { AxiosResponse } from 'axios';
-import * as ethUtil from 'ethereumjs-util';
 
 
 import {

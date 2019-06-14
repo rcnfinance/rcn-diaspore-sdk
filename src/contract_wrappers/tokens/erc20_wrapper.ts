@@ -133,7 +133,6 @@ export default abstract class ERC20TokenWrapper extends ContractWrapper {
    * Returns the token symbol
    */
   public symbol = async () => {
-    // return (await this.contract).symbol.callAsync();
     return ERC20TokenWrapper.SYMBOL;
   };
 

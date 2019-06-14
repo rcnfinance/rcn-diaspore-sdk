@@ -2,7 +2,6 @@ import { Oracle } from '@jpgonzalezra/diaspore-contract-artifacts';
 import { ContractAbi } from 'ethereum-types';
 import axios from 'axios';
 import * as ethUtil from 'ethereumjs-util';
-import ContractWrapper from './../../contract_wrapper';
 
 import { OracleContract } from '@jpgonzalezra/abi-wrappers';
 
