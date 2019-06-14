@@ -8,11 +8,12 @@ import {
     DiasporeWeb3CostructorParams,
     GetBalanceParams
 } from './diaspore_api'
-import { BigNumber } from '@0x/utils';
+import { BigNumber, addressUtils } from '@0x/utils';
 import LoanManagerMarmoWrapper from './contract_wrappers/components/marmo/loan_manager_wrapper';
-import { Wallet, Provider } from 'marmojs';
+import { Wallet, Provider, SignedIntent, Intent, IntentAction, IntentBuilder, WETH } from 'marmojs';
 import assert from './utils/assert';
 import { DiasporeAbstractAPI } from './diaspore_abstract_api';
+import { StatusCode } from 'marmojs';
 
 /**
  * @param provider The Marmo3 provider
@@ -25,7 +26,8 @@ export interface DiasporeMarmoCostructorParams extends DiasporeWeb3CostructorPar
 
 export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
-    private address: string;
+    subProvider: Provider;
+    wallet: Wallet;
     /**
     * An instance of the LoanManagerWrapper class containing methods
    * for interacting with diaspore smart contract.
@@ -49,7 +51,8 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
             params.subProvider
         );
 
-        this.address = params.wallet.address
+        this.subProvider = params.subProvider;
+        this.wallet = params.wallet;
 
     }
 
@@ -75,12 +78,12 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
     public withdraw = async (params: WithdrawParams) => {
         const intentId = this.debtEngineModelWrapper.withdraw(params.id, params.to);
-        return intentId; 
+        return intentId;
     }
 
     public withdrawPartial = async (params: WithdrawPartialParams) => {
         const intentId = await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount);
-        return intentId; 
+        return intentId;
 
     }
 
@@ -94,7 +97,7 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
      * @return Address string
      */
     public getAccount = async (): Promise<string> => {
-        return Promise.resolve<string>(this.address);
+        return Promise.resolve<string>(this.wallet.address);
     };
 
     /**
@@ -106,5 +109,15 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
         assert.isETHAddressHex('address', addr);
         return this.web3Wrapper.getBalanceInWeiAsync(addr);
     };
+
+    public getStatus = async (intentId: string): Promise<StatusCode> => {
+        // FIXME: (WA)
+        // there are that accept empty intent actions on marmojs
+        const intentActionMock =new WETH(addressUtils.generatePseudoRandomAddress()).approve(addressUtils.generatePseudoRandomAddress(), "0");
+        const intent: Intent = new IntentBuilder().withIntentAction(intentActionMock).build();
+        const signedIntent = this.wallet.sign(intent);
+        signedIntent.id = intentId; // Work araund
+        return (await signedIntent.status(this.subProvider)).code;
+    }
 
 }
