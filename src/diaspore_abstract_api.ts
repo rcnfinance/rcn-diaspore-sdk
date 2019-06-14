@@ -8,7 +8,8 @@ import {
   LendParams,
   ApproveRequestParams,
   RequestLoanParams,
-  GetBalanceParams
+  GetBalanceParams,
+  LendRequestParams
 } from './diaspore_api'
 import {
   LoanManager,
@@ -171,6 +172,34 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
       expiration,
       data
     }
+  }
+
+  protected async createLendRequestParam(params: LendParams): Promise<LendRequestParams> {
+
+    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+    const cosigner: string = DiasporeAbstractAPI.ADDRESS0;
+    const cosignerLimit: BigNumber = new BigNumber(0);
+    const cosignerData: string = '0x';
+
+    const id: string = params.id;
+    const value: BigNumber = params.value;
+    const request = { 
+      id,
+      oracleData, 
+      cosigner,
+      cosignerLimit, 
+      cosignerData
+    }
+    
+    const spender: string = await this.loanManagerWrapper.address()
+    const owner: string = await this.getAccount()
+    const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
+    if (!allowance.isEqualTo(value)) { 
+      throw new Error("Error sending tokens to borrower. ");
+    }
+
+    return request;
+
   }
 
   /**
