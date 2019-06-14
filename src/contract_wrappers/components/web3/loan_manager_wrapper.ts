@@ -45,9 +45,7 @@ interface LoanManagerSubscribeAsyncParams extends Subscribe {
   (params: CanceledSubscribeAsyncParams): Promise<string>;
 }
 
-interface LoanManagerLogsAsyncParams extends GetLogs {
-  // logs TODO:
-}
+interface LoanManagerLogsAsyncParams extends GetLogs {}
 
 interface GetIdParams {
   amount: BigNumber, 

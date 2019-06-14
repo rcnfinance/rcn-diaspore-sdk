@@ -1,6 +1,6 @@
 import { BigNumber } from '@0x/utils';
 import InstallmentsModelWrapper from '../web3/installments_model_wrapper';
-import { InstallmentsModelMarmoContract, DebtEngineMarmoContract } from '@jpgonzalezra/marmo-abi-wrappers';
+import { InstallmentsModelMarmoContract, DebtEngineMarmoContract, Response } from '@jpgonzalezra/marmo-abi-wrappers';
 import { Wallet, Provider } from 'marmojs';
 import DebtEngineWrapper from '../web3/debt_engine_wrapper';
 
@@ -29,15 +29,18 @@ export default class InstallmentsModelMarmoWrapper {
    *  Send Transactions
    */
   public withdraw = async (id: string, to: string) => {
-    this.contract.withdraw(id, to)
+    const response: Response = await this.contract.withdraw(id, to)
+    return response.txHash
   }
 
   public withdrawBatch = async (ids: string[], to: string) => {
-    this.contract.withdrawBatch(ids, to)
+    const response: Response = await this.contract.withdrawBatch(ids, to)
+    return response.txHash
   }
 
   public withdrawPartial = async (id: string, to: string, amount: BigNumber) => {
-    this.contract.withdrawPartial(id, to, amount)
+    const response: Response = await this.contract.withdrawPartial(id, to, amount)
+    return response.txHash
   }
 
 }

@@ -1,7 +1,8 @@
 import { BigNumber } from '@0x/utils';
 import LoanManagerWrapper from './../web3/loan_manager_wrapper';
-import { LoanManagerMarmoContract } from '@jpgonzalezra/marmo-abi-wrappers';
+import { LoanManagerMarmoContract, Response } from '@jpgonzalezra/marmo-abi-wrappers';
 import { Wallet, Provider } from 'marmojs';
+import { LendRequestParams } from './../../../diaspore_api';
 
 interface RequestLoanParams {
   amount: BigNumber,
@@ -22,14 +23,6 @@ interface GetIdParams {
   salt: BigNumber,
   expiration: BigNumber,
   data: string
-}
-
-interface LendRequestParams {
-  id: string,
-  oracleData: string,
-  cosigner: string,
-  cosignerLimit: BigNumber,
-  cosignerData: string
 }
 
 interface RegistreApproveRequestParams {
@@ -114,7 +107,7 @@ export default class LoanManagerMarmoWrapper {
    *  Send Transactions
    */
   public requestLoan = async (params: RequestLoanParams) => {
-    this.contract.requestLoan(
+    const response: Response = await this.contract.requestLoan(
       params.amount,
       params.model, 
       params.oracle, 
@@ -123,6 +116,7 @@ export default class LoanManagerMarmoWrapper {
       params.expiration, 
       params.data
     );
+    return response.txHash;
   }
 
   public approveRequest = async (id: string) => {
@@ -134,13 +128,14 @@ export default class LoanManagerMarmoWrapper {
   }
 
   public lend = async (params: LendRequestParams) => {
-    this.contract.lend(
+    const response: Response = await this.contract.lend(
       params.id, 
       params.oracleData, 
       params.cosigner, 
       params.cosignerLimit, 
       params.cosignerData
     )
+    return response.txHash
   }
 
   public cancel = async (id: string) => {
