@@ -95,28 +95,8 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   public lend = async (params: LendWithCallBackParams) => {
 
-    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeWeb3API.CURRENCY);
-    const cosigner: string = DiasporeWeb3API.ADDRESS0;
-    const cosignerLimit: BigNumber = new BigNumber(0);
-    const cosignerData: string = '0x';
-
-    const id: string = params.id;
-    const value: BigNumber = params.value;
-    const request = { 
-      id,
-      oracleData, 
-      cosigner,
-      cosignerLimit, 
-      cosignerData
-    }
     
-    const spender: string = await this.loanManagerWrapper.address()
-    const owner: string = await this.getAccount()
-    const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
-    if (!allowance.isEqualTo(value)) { 
-      throw new Error("Error sending tokens to borrower. ");
-    }
-
+    const request = await this.createLendRequestParam(params);
     await this.loanManagerWrapper.lend(request);
 
     const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Lent, params.callback );

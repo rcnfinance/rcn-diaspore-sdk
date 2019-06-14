@@ -46,6 +46,14 @@ export interface LendParams {
     value: BigNumber;
 }
 
+export interface LendRequestParams {
+    id: string,
+    oracleData: string,
+    cosigner: string,
+    cosignerLimit: BigNumber,
+    cosignerData: string
+  }
+
 export interface LendWithCallBackParams extends LendParams {
     callback: EventCallback<ContractEventArg>;
 }

@@ -55,50 +55,56 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
     public request = async (params: RequestParams): Promise<string> => {
         const request = await this.createRequestLoanParam(params);
-        await this.loanManagerMarmoWrapper.requestLoan(request);
-        return Promise.resolve<string>("intentId");
+        const intentId: string = await this.loanManagerMarmoWrapper.requestLoan(request);
+        return Promise.resolve<string>(intentId);
+    }
+
+    public lend = async (params: LendParams) => {
+        const request = await this.createLendRequestParam(params);
+        const intentId: string = await this.loanManagerMarmoWrapper.lend(request);
+        return Promise.resolve<string>(intentId);
+    }
+
+    public pay = async (params: PayParams) => {
+        //TODO: MAKE
+    }
+
+    public payToken = async (params: PayParams) => {
+        //TODO: MAKE
+    }
+
+    public withdraw = async (params: WithdrawParams) => {
+        const intentId = this.debtEngineModelWrapper.withdraw(params.id, params.to);
+        return intentId; 
+    }
+
+    public withdrawPartial = async (params: WithdrawPartialParams) => {
+        const intentId = await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount);
+        return intentId; 
+
+    }
+
+    public approveRequest = async (params: ApproveRequestParams) => {
+        const intentId = await this.loanManagerWrapper.approveRequest(params.id);
+        return intentId;
     }
 
     /**
-   * Get the account currently used by DiasporeMarmoAPI
-   * @return Address string
-   */
+     * Get the account currently used by DiasporeMarmoAPI
+     * @return Address string
+     */
     public getAccount = async (): Promise<string> => {
         return Promise.resolve<string>(this.address);
     };
 
-  /**
-   * Get the ETH balance
-   * @return Balance BigNumber
-   */
-  public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
-    const addr = params.address !== undefined ? params.address : await this.getAccount();
-    assert.isETHAddressHex('address', addr);
-    return this.web3Wrapper.getBalanceInWeiAsync(addr);
-  };
-
-    public lend = async (params: LendParams) => {
-        //TODO: implement
-    }
-
-    public pay = async (params: PayParams) => {
-        //TODO: implement
-    }
-
-    public payToken = async (params: PayParams) => {
-        //TODO: implement
-    }
-
-    public withdraw = async (params: WithdrawParams) => {
-        //TODO: implement
-    }
-
-    public withdrawPartial = async (params: WithdrawPartialParams) => {
-        //TODO: implement
-    }
-
-    public approveRequest = async (params: ApproveRequestParams) => {
-        //TODO: implement
-    }
+    /**
+     * Get the ETH balance
+     * @return Balance BigNumber
+     */
+    public getBalance = async (params: GetBalanceParams): Promise<BigNumber> => {
+        const addr = params.address !== undefined ? params.address : await this.getAccount();
+        assert.isETHAddressHex('address', addr);
+        return this.web3Wrapper.getBalanceInWeiAsync(addr);
+    };
 
 }

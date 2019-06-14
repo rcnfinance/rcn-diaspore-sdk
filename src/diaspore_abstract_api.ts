@@ -1,3 +1,11 @@
+import { BigNumber } from '@0x/utils';
+import { Web3Wrapper } from '@0x/web3-wrapper';
+import {
+  LoanManager,
+  DebtEngine,
+  Model,
+  Cosigner,
+} from '@jpgonzalezra/diaspore-contract-artifacts';
 import {
   DiasporeAPI,
   DiasporeWeb3CostructorParams,
@@ -11,13 +19,6 @@ import {
   GetBalanceParams,
   LendRequestParams
 } from './diaspore_api'
-import {
-  LoanManager,
-  DebtEngine,
-  Model,
-  Cosigner,
-} from '@jpgonzalezra/diaspore-contract-artifacts';
-import { BigNumber } from '@0x/utils';
 import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory from './factories/token_wrapper_factory';
 import LoanManagerWrapper from './contract_wrappers/components/web3/loan_manager_wrapper'
@@ -26,16 +27,13 @@ import InstallmentsModelWrapper from './contract_wrappers/components/web3/instal
 import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
 import OracleWrapper from './contract_wrappers/components/common/oracle_wrapper';
 
-import { Web3Wrapper } from '@0x/web3-wrapper';
-
 /**
  * The DiasporeAbstractAPI abstract class contains abtract components.
  */
 export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
-  static readonly CURRENCY = 'ARS';
-  static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
-
+  protected static readonly CURRENCY = 'ARS';
+  protected static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
   /**
    * An instance of the LoanManagerWrapper class containing methods
    * for interacting with diaspore smart contract.
