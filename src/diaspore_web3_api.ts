@@ -20,8 +20,8 @@ import {
   RequestWithCallBackParams, 
   LendWithCallBackParams, 
   PayWithCallBackParams, 
-  WithdrawParams,
-  WithdrawPartialParams,
+  WithdrawWithCallBackParams,
+  WithdrawPartialWithCallBackParams,
   ApproveRequestWithCallBackParams,
   DiasporeWeb3ConstructorParams, 
   GetBalanceParams,
@@ -123,7 +123,7 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     return subscription;
   }
 
-  public withdraw = async (params: WithdrawParams) => {
+  public withdraw = async (params: WithdrawWithCallBackParams) => {
 
     await this.debtEngineModelWrapper.withdraw(params.id, params.to)
 
@@ -133,7 +133,7 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   }
 
-  public withdrawPartial = async (params: WithdrawPartialParams) => {
+  public withdrawPartial = async (params: WithdrawPartialWithCallBackParams) => {
 
     await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount)
 

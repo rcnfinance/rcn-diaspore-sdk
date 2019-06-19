@@ -61,7 +61,6 @@ export default class DebtEngineWrapper extends ContractWrapper {
     this.contract = contract;
   }
 
-
   public withdraw = async (id: string, to: string) => {
     return (await this.contract).withdraw.sendTransactionAsync(id, to);
   }
