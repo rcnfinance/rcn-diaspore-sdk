@@ -1,3 +1,11 @@
+import { BigNumber } from '@0x/utils';
+import { Web3Wrapper } from '@0x/web3-wrapper';
+import {
+  LoanManager,
+  DebtEngine,
+  Model,
+  Cosigner,
+} from '@jpgonzalezra/diaspore-contract-artifacts';
 import {
   DiasporeAPI,
   DiasporeWeb3CostructorParams,
@@ -8,15 +16,9 @@ import {
   LendParams,
   ApproveRequestParams,
   RequestLoanParams,
-  GetBalanceParams
+  GetBalanceParams,
+  LendRequestParams
 } from './diaspore_api'
-import {
-  LoanManager,
-  DebtEngine,
-  Model,
-  Cosigner,
-} from '@jpgonzalezra/diaspore-contract-artifacts';
-import { BigNumber } from '@0x/utils';
 import ContractFactory from './factories/contract_factory';
 import TokenWrapperFactory from './factories/token_wrapper_factory';
 import LoanManagerWrapper from './contract_wrappers/components/web3/loan_manager_wrapper'
@@ -25,16 +27,13 @@ import InstallmentsModelWrapper from './contract_wrappers/components/web3/instal
 import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
 import OracleWrapper from './contract_wrappers/components/common/oracle_wrapper';
 
-import { Web3Wrapper } from '@0x/web3-wrapper';
-
 /**
  * The DiasporeAbstractAPI abstract class contains abtract components.
  */
 export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
-  static readonly CURRENCY = 'ARS';
-  static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
-
+  protected static readonly CURRENCY = 'ARS';
+  protected static readonly ADDRESS0 = '0x0000000000000000000000000000000000000000';
   /**
    * An instance of the LoanManagerWrapper class containing methods
    * for interacting with diaspore smart contract.
@@ -171,6 +170,34 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
       expiration,
       data
     }
+  }
+
+  protected async createLendRequestParam(params: LendParams): Promise<LendRequestParams> {
+
+    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+    const cosigner: string = DiasporeAbstractAPI.ADDRESS0;
+    const cosignerLimit: BigNumber = new BigNumber(0);
+    const cosignerData: string = '0x';
+
+    const id: string = params.id;
+    const value: BigNumber = params.value;
+    const request = { 
+      id,
+      oracleData, 
+      cosigner,
+      cosignerLimit, 
+      cosignerData
+    }
+    
+    const spender: string = await this.loanManagerWrapper.address()
+    const owner: string = await this.getAccount()
+    const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
+    if (!allowance.isEqualTo(value)) { 
+      throw new Error("Error sending tokens to borrower. ");
+    }
+
+    return request;
+
   }
 
   /**

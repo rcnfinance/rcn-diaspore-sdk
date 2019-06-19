@@ -1,6 +1,6 @@
 import { BigNumber } from '@0x/utils';
 import InstallmentsModelWrapper from '../web3/installments_model_wrapper';
-import { InstallmentsModelMarmoContract } from '@jpgonzalezra/marmo-abi-wrappers';
+import { InstallmentsModelMarmoContract, Response } from '@jpgonzalezra/marmo-abi-wrappers';
 import { Wallet, Provider } from 'marmojs';
 
 
@@ -41,15 +41,18 @@ export default class InstallmentsModelMarmoWrapper {
    *  Send Transactions
    */
   public addDebt = async (id: string, amount: BigNumber) => {
-    this.contract.addDebt(id, amount)
+    const response: Response = await this.contract.addDebt(id, amount)
+    return response.txHash
   }
 
   public addPaid = async (id: string, amount: BigNumber) => {
-    this.contract.addPaid(id, amount)
+    const response: Response = await this.contract.addPaid(id, amount)
+    return response.txHash
   }
 
   public fixClock = async (id: string, amount: BigNumber) => {
-    this.contract.fixClock(id, amount)
+    const response: Response = await this.contract.fixClock(id, amount)
+    return response.txHash
   }
 
   public run = async (id: string) => {

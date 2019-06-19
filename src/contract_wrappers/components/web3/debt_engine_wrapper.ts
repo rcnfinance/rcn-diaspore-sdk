@@ -39,7 +39,6 @@ interface DebtEngineSubscribeAsyncParams extends Subscribe {
 }
 
 interface DebtEngineLogsAsyncParams extends GetLogs {
-  // logs TODO:
 }
 
 
@@ -61,7 +60,6 @@ export default class DebtEngineWrapper extends ContractWrapper {
     super(web3Wrapper, contract);
     this.contract = contract;
   }
-
 
   public withdraw = async (id: string, to: string) => {
     return (await this.contract).withdraw.sendTransactionAsync(id, to);

@@ -57,6 +57,11 @@ export type EventCallback<ArgsType extends DecodedLogArgs> = (
   log?: DecodedLogEvent<ArgsType>,
 ) => void;
 
+export type EventMarmoCallback = (
+  err: null | Error,
+  log?: string,
+) => void;
+
 export interface IndexedFilterValues {
   [index: string]: ContractEventArg;
 }

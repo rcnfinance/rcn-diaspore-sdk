@@ -20,8 +20,8 @@ import {
   RequestWithCallBackParams, 
   LendWithCallBackParams, 
   PayWithCallBackParams, 
-  WithdrawParams,
-  WithdrawPartialParams,
+  WithdrawWithCallBackParams,
+  WithdrawPartialWithCallBackParams,
   ApproveRequestWithCallBackParams,
   DiasporeWeb3ConstructorParams, 
   GetBalanceParams,
@@ -95,28 +95,8 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   public lend = async (params: LendWithCallBackParams) => {
 
-    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeWeb3API.CURRENCY);
-    const cosigner: string = DiasporeWeb3API.ADDRESS0;
-    const cosignerLimit: BigNumber = new BigNumber(0);
-    const cosignerData: string = '0x';
-
-    const id: string = params.id;
-    const value: BigNumber = params.value;
-    const request = { 
-      id,
-      oracleData, 
-      cosigner,
-      cosignerLimit, 
-      cosignerData
-    }
     
-    const spender: string = await this.loanManagerWrapper.address()
-    const owner: string = await this.getAccount()
-    const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
-    if (!allowance.isEqualTo(value)) { 
-      throw new Error("Error sending tokens to borrower. ");
-    }
-
+    const request = await this.createLendRequestParam(params);
     await this.loanManagerWrapper.lend(request);
 
     const subscribeParams = this.getSubscribeAsyncParams(LoanManagerEvents.Lent, params.callback );
@@ -143,7 +123,7 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
     return subscription;
   }
 
-  public withdraw = async (params: WithdrawParams) => {
+  public withdraw = async (params: WithdrawWithCallBackParams) => {
 
     await this.debtEngineModelWrapper.withdraw(params.id, params.to)
 
@@ -153,7 +133,7 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   }
 
-  public withdrawPartial = async (params: WithdrawPartialParams) => {
+  public withdrawPartial = async (params: WithdrawPartialWithCallBackParams) => {
 
     await this.debtEngineModelWrapper.withdrawPartial(params.id, params.to, params.amount)
 
