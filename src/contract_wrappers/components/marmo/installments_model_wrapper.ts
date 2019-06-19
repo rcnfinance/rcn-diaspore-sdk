@@ -18,7 +18,7 @@ export default class InstallmentsModelMarmoWrapper {
    * @param web3Wrapper Web3Wrapper instance to use
    * @param contract
    */
-  public constructor(installmentsModelWrapper: InstallmentsModelWrapper, address: Promise<string>, wallet: Wallet, provider: Provider) {
+  public constructor(installmentsModelWrapper: InstallmentsModelWrapper, address: Promise<string>, wallet: any, provider: Provider) {
     this.contract = new InstallmentsModelMarmoContract(address, wallet, provider);
     this.wrapper = installmentsModelWrapper;
   }
