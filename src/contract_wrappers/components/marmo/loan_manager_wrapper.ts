@@ -120,11 +120,13 @@ export default class LoanManagerMarmoWrapper {
   }
 
   public approveRequest = async (id: string) => {
-    this.contract.approveRequest(id);
+    const response: Response = await this.contract.approveRequest(id);
+    return response.txHash;
   }
 
   public registerApproveRequest = async (params: RegistreApproveRequestParams) => {
-    this.contract.registerApproveRequest(params.id, params.signature);
+    const response: Response = await this.contract.registerApproveRequest(params.id, params.signature);
+    return response.txHash;
   }
 
   public lend = async (params: LendRequestParams) => {
