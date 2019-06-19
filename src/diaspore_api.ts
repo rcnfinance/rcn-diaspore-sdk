@@ -1,5 +1,5 @@
 import { BigNumber } from '@0x/utils';
-import { EventCallback } from './types';
+import { EventCallback, EventMarmoCallback } from './types';
 import { ContractEventArg } from 'ethereum-types';
 import { Provider } from 'ethereum-types';
 
@@ -26,10 +26,14 @@ export interface RequestParams {
     duration: BigNumber;
     timeUnit: number | BigNumber;
 }
+export interface RequestMarmoCallBackParams extends RequestParams {
+    callback?: EventMarmoCallback;
+}
 
 export interface RequestWithCallBackParams extends RequestParams {
     callback: EventCallback<ContractEventArg>;
 }
+
 
 export interface RequestLoanParams {
     amount: BigNumber,

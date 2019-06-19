@@ -6,8 +6,11 @@ import {
     WithdrawPartialParams,
     ApproveRequestParams,
     DiasporeWeb3CostructorParams,
-    GetBalanceParams
+    GetBalanceParams,
+    RequestMarmoCallBackParams
 } from './diaspore_api'
+import { EventMarmoCallback } from './types';
+import { ContractEventArg } from 'ethereum-types';
 import { BigNumber, addressUtils } from '@0x/utils';
 import LoanManagerMarmoWrapper from './contract_wrappers/components/marmo/loan_manager_wrapper';
 import { Wallet, Provider, SignedIntent, Intent, IntentAction, IntentBuilder, WETH } from 'marmojs';
@@ -23,6 +26,8 @@ export interface DiasporeMarmoCostructorParams extends DiasporeWeb3CostructorPar
     subProvider: Provider;
     wallet: Wallet;
 }
+
+const setWait = (ms: any) => new Promise((r, j) => setTimeout(r, ms))
 
 export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
@@ -56,9 +61,29 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
     }
 
-    public request = async (params: RequestParams): Promise<string> => {
+    // TODO: remove freezing, execute async callback
+    public wait = async (predicate: () => Promise<boolean>, intentId: string, callback: EventMarmoCallback, timeout: number = 30, period = 1000) => {
+        const mustEnd = Date.now() + timeout * period;
+        while (Date.now() < mustEnd) {
+            if (await predicate()) {
+                //TODO: sent to receipt (add Status Object to marmojs)
+                callback(null, (await this.getStatus(intentId)).toString())
+                return true
+            } else {
+                await setWait(period)
+            }
+        }
+        return false;
+    }
+
+    public request = async (params: RequestMarmoCallBackParams): Promise<string> => {
         const request = await this.createRequestLoanParam(params);
         const intentId: string = await this.loanManagerMarmoWrapper.requestLoan(request);
+
+        if (params.callback) {
+            this.wait(async () => (await this.getStatus(intentId) === StatusCode.Settling), intentId, params.callback, 640)
+        }
+
         return Promise.resolve<string>(intentId);
     }
 
