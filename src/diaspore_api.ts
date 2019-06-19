@@ -26,14 +26,13 @@ export interface RequestParams {
     duration: BigNumber;
     timeUnit: number | BigNumber;
 }
-export interface RequestMarmoCallBackParams extends RequestParams {
+export interface RequestCallBackMarmoParams extends RequestParams {
     callback?: EventMarmoCallback;
 }
 
 export interface RequestWithCallBackParams extends RequestParams {
     callback: EventCallback<ContractEventArg>;
 }
-
 
 export interface RequestLoanParams {
     amount: BigNumber,
@@ -57,6 +56,10 @@ export interface LendRequestParams {
     cosignerLimit: BigNumber,
     cosignerData: string
   }
+
+  export interface LendWithCallBackMarmoParams extends LendParams {
+    callback?: EventMarmoCallback;
+}
 
 export interface LendWithCallBackParams extends LendParams {
     callback: EventCallback<ContractEventArg>;
@@ -97,15 +100,28 @@ export interface PayWithCallBackParams extends PayParams {
 export interface WithdrawParams {
     id: string;
     to: string;
+}
+
+export interface WithdrawWithCallBackParams extends WithdrawParams {
     callback: EventCallback<ContractEventArg>;
 }
 
-export interface WithdrawWithCallBackParams {
-    callback: EventCallback<ContractEventArg>;
+export interface WithdrawWithCallBackMarmoParams extends WithdrawParams {
+    callback: EventMarmoCallback;
 }
 
 export interface WithdrawPartialParams extends WithdrawParams {
     amount: BigNumber;
+}
+
+export interface WithdrawPartialWithCallBackParams extends WithdrawParams {
+    amount: BigNumber;
+    callback: EventCallback<ContractEventArg>;
+}
+
+export interface WithdrawPartialWithCallBackMarmoParams extends WithdrawParams {
+    amount: BigNumber;
+    callback?: EventMarmoCallback;
 }
 
 export interface ApproveRequestParams {
@@ -114,6 +130,10 @@ export interface ApproveRequestParams {
 
 export interface ApproveRequestWithCallBackParams extends ApproveRequestParams {
     callback: EventCallback<ContractEventArg>;
+}
+
+export interface ApproveRequestWithCallBackMarmoParams extends ApproveRequestParams {
+    callback?: EventMarmoCallback;
 }
 
 export interface DiasporeAPI {
