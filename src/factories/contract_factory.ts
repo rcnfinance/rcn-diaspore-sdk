@@ -69,6 +69,10 @@ export default class ContractFactory {
     return await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.LoanManagerContract);
   }
 
+  public async getDebtEngineContractAddress(): Promise<string> {
+    return await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.DebtEngineContract);
+  }
+
   public async getDebtEngineContract(address?: string): Promise<DebtEngineContract> {
     if (address == undefined) {
       address = await (await this.rcnRegistry).getAddress.callAsync(DiasporeContracts.DebtEngineContract);
