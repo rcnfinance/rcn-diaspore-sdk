@@ -75,7 +75,7 @@
     "@0x/web3-wrapper": "^6.0.5",
     "@jpgonzalezra/abi-wrappers": "1.0.9",
     "@jpgonzalezra/diaspore-contract-artifacts": "1.0.9",
-    "@jpgonzalezra/marmo-abi-wrappers": "^1.0.14",
+    "@jpgonzalezra/marmo-abi-wrappers": "^1.0.15",
     "axios": "^0.18.0",
     "ethereum-types": "^2.1.2",
     "ethereumjs-blockstream": "6.0.0",
@@ -84,7 +84,7 @@
     "husky": "^2.4.1",
     "js-sha3": "^0.8.0",
     "lodash": "^4.17.5",
-    "marmojs": "^0.2.9",
+    "marmojs": "^0.2.10",
     "moment": "^2.24.0",
     "uuid": "^3.3.2"
   },

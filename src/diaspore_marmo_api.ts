@@ -113,7 +113,7 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
     public getStatus = async (intentId: string): Promise<StatusCode> => {
         // FIXME: (WA)
         // there are that accept empty intent actions on marmojs
-        const intentActionMock =new WETH(addressUtils.generatePseudoRandomAddress()).approve(addressUtils.generatePseudoRandomAddress(), "0");
+        const intentActionMock = new WETH(addressUtils.generatePseudoRandomAddress()).approve(addressUtils.generatePseudoRandomAddress(), "0");
         const intent: Intent = new IntentBuilder().withIntentAction(intentActionMock).build();
         const signedIntent = this.wallet.sign(intent);
         signedIntent.id = intentId; // Work araund

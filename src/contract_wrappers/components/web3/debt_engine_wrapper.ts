@@ -39,7 +39,6 @@ interface DebtEngineSubscribeAsyncParams extends Subscribe {
 }
 
 interface DebtEngineLogsAsyncParams extends GetLogs {
-  // logs TODO:
 }
 
 
