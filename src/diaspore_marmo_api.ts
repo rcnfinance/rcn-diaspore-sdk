@@ -84,11 +84,17 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
     }
 
     public pay = async (params: PayWitCallBackMarmoParams) => {
-        //TODO: MAKE
+        const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+        const intentId: string = await this.debtEngineMarmoModelWrapper.pay(params.id, params.origin, oracleData);
+        this.subscribeAsync(intentId, params.callback)
+        return intentId;
     }
 
     public payToken = async (params: PayWitCallBackMarmoParams) => {
-        //TODO: MAKE
+        const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+        const intentId: string = await this.debtEngineMarmoModelWrapper.payToken(params.id, params.origin, oracleData);
+        this.subscribeAsync(intentId, params.callback)
+        return intentId;
     }
 
     public withdraw = async (params: WithdrawWithCallBackMarmoParams) => {

@@ -116,8 +116,7 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
   }
 
   public payToken = async (params: PayWithCallBackParams) => {
-
-
+    
     const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
     await this.debtEngineModelWrapper.payToken(params.id, params.origin, oracleData);
 

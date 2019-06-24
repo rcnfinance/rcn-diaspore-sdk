@@ -65,13 +65,13 @@ export default class DebtEngineWrapper extends ContractWrapper {
   }
 
   public pay = async (id: string, origin: string, oracleData: string) => {
-    const amount = await this.client.getAmountToPay(id);
-    console.log(amount)
+    const amount: BigNumber = await this.client.getAmountToPay(id);
     return (await this.contract).pay.sendTransactionAsync(id, amount, origin, oracleData)
   }
 
   public payToken = async (id: string, origin: string, oracleData: string) => {
-    //TODO:
+    const amount: BigNumber = await this.client.getAmountToPay(id);
+    return (await this.contract).pay.sendTransactionAsync(id, amount, origin, oracleData)
   }
 
   public withdraw = async (id: string, to: string) => {

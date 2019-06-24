@@ -44,11 +44,15 @@ export default class DebtEngineMarmoWrapper {
   }
 
   public pay = async (id: string, origin: string, oracleData: string) => {
-    //TODO:
+    const amount: BigNumber = await this.client.getAmountToPay(id);
+    const response: Response = await this.contract.pay(id, amount, origin, oracleData);
+    return response.txHash
   }
 
   public payToken = async (id: string, origin: string, oracleData: string) => {
-    //TODO:
+    const amount: BigNumber = await this.client.getAmountToPay(id);
+    const response: Response = await this.contract.payToken(id, amount, origin, oracleData);
+    return response.txHash
   }
 
 
