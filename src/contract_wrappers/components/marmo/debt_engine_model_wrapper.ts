@@ -1,19 +1,18 @@
 import { BigNumber } from '@0x/utils';
-import InstallmentsModelWrapper from '../web3/installments_model_wrapper';
-import { InstallmentsModelMarmoContract, DebtEngineMarmoContract, Response } from '@jpgonzalezra/marmo-abi-wrappers';
+import { DebtEngineMarmoContract, Response } from '@jpgonzalezra/marmo-abi-wrappers';
 import { Wallet, Provider } from 'marmojs';
 import DebtEngineWrapper from '../web3/debt_engine_wrapper';
-
+import DebtEngineClient from '../common/debt_engine_model_client';
 
 /**
  * This class includes the functionality related to interacting with the LoanManager contract.
  */
-export default class InstallmentsModelMarmoWrapper {
+export default class DebtEngineMarmoWrapper {
 
 
   protected wrapper: DebtEngineWrapper;
   protected contract: DebtEngineMarmoContract;
-
+  protected client: DebtEngineClient;
 
   /**
    * Instantiate InstallmenstModelWrapper
@@ -23,6 +22,7 @@ export default class InstallmentsModelMarmoWrapper {
   public constructor(debtEngineWrapper: DebtEngineWrapper, address: Promise<string>, wallet: Wallet, provider: Provider) {
     this.contract = new DebtEngineMarmoContract(address, wallet, provider);
     this.wrapper = debtEngineWrapper;
+    this.client = new DebtEngineClient()
   }
 
   /**
@@ -42,5 +42,14 @@ export default class InstallmentsModelMarmoWrapper {
     const response: Response = await this.contract.withdrawPartial(id, to, amount)
     return response.txHash
   }
+
+  public pay = async (id: string, origin: string, oracleData: string) => {
+    //TODO:
+  }
+
+  public payToken = async (id: string, origin: string, oracleData: string) => {
+    //TODO:
+  }
+
 
 }

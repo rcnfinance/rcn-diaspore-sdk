@@ -22,6 +22,7 @@ import {
   GetLogs,
 } from '../../../types';
 import { DebtEngineContract } from '@jpgonzalezra/abi-wrappers';
+import DebtEngineClient from '../common/debt_engine_model_client';
 
 interface DebtEngineWithdrawSubscribeAsyncParams extends SubscribeAsyncParams {
   eventName: DebtEngineEvents.Withdrawn;
@@ -50,6 +51,7 @@ export default class DebtEngineWrapper extends ContractWrapper {
 
   private static PATH: string = ''; 
   protected contract: Promise<DebtEngineContract>;
+  protected client: DebtEngineClient;
 
   /**
    * Instantiate DebtEngineWrapper
@@ -59,6 +61,17 @@ export default class DebtEngineWrapper extends ContractWrapper {
   public constructor(web3Wrapper: Web3Wrapper, contract: Promise<DebtEngineContract>) {
     super(web3Wrapper, contract);
     this.contract = contract;
+    this.client = new DebtEngineClient()
+  }
+
+  public pay = async (id: string, origin: string, oracleData: string) => {
+    const amount = await this.client.getAmountToPay(id);
+    console.log(amount)
+    return (await this.contract).pay.sendTransactionAsync(id, amount, origin, oracleData)
+  }
+
+  public payToken = async (id: string, origin: string, oracleData: string) => {
+    //TODO:
   }
 
   public withdraw = async (id: string, to: string) => {
