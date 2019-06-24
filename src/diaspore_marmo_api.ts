@@ -6,12 +6,13 @@ import {
     LendWithCallBackMarmoParams,
     ApproveRequestWithCallBackMarmoParams,
     WithdrawPartialWithCallBackMarmoParams,
-    WithdrawWithCallBackMarmoParams
+    WithdrawWithCallBackMarmoParams,
+    PayWitCallBackMarmoParams,
 } from './diaspore_api'
 import { EventMarmoCallback } from './types';
 import { BigNumber, addressUtils } from '@0x/utils';
 import LoanManagerMarmoWrapper from './contract_wrappers/components/marmo/loan_manager_wrapper';
-import DebtEngineMarmoWrapper from './contract_wrappers/components/marmo/debt_engine_model';
+import DebtEngineMarmoWrapper from './contract_wrappers/components/marmo/debt_engine_model_wrapper';
 import { Wallet, Provider, Intent, IntentBuilder, WETH } from 'marmojs';
 import assert from './utils/assert';
 import { DiasporeAbstractAPI } from './diaspore_abstract_api';
@@ -82,11 +83,11 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
         return Promise.resolve<string>(intentId);
     }
 
-    public pay = async (params: PayParams) => {
+    public pay = async (params: PayWitCallBackMarmoParams) => {
         //TODO: MAKE
     }
 
-    public payToken = async (params: PayParams) => {
+    public payToken = async (params: PayWitCallBackMarmoParams) => {
         //TODO: MAKE
     }
 

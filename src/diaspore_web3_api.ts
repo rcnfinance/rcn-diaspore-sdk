@@ -107,7 +107,8 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   public pay = async (params: PayWithCallBackParams) => {
 
-    //TODO: MAKE
+    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+    this.debtEngineModelWrapper.pay(params.id, params.origin, oracleData)
 
     const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Paid, params.callback );
     const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
@@ -116,7 +117,9 @@ export class DiasporeWeb3API extends DiasporeAbstractAPI {
 
   public payToken = async (params: PayWithCallBackParams) => {
 
-    //TODO: MAKE
+
+    const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
+    await this.debtEngineModelWrapper.payToken(params.id, params.origin, oracleData);
 
     const subscribeParams = this.getSubscribeAsyncParams(DebtEngineEvents.Paid, params.callback );
     const subscription: string = await this.debtEngineModelWrapper.subscribeAsync(subscribeParams)
