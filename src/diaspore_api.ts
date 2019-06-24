@@ -86,15 +86,15 @@ export interface GetTokensParams {
 
 export interface PayParams {
     id: string;
-    amount: BigNumber;
     origin: string;
 }
 
 export interface PayWithCallBackParams extends PayParams {
-    id: string;
-    amount: BigNumber;
-    origin: string;
     callback: EventCallback<ContractEventArg>;
+}
+
+export interface PayWitCallBackMarmoParams extends PayParams {
+    callback: EventMarmoCallback;
 }
 
 export interface WithdrawParams {
