@@ -13,10 +13,10 @@ import { EventMarmoCallback } from './types';
 import { BigNumber, addressUtils } from '@0x/utils';
 import LoanManagerMarmoWrapper from './contract_wrappers/components/marmo/loan_manager_wrapper';
 import DebtEngineMarmoWrapper from './contract_wrappers/components/marmo/debt_engine_model_wrapper';
-import { Wallet, Provider, Intent, IntentBuilder, WETH } from 'marmojs';
+import { Wallet, Provider, Intent, IntentBuilder, WETH, StatusCode } from 'marmojs';
 import assert from './utils/assert';
 import { DiasporeAbstractAPI } from './diaspore_abstract_api';
-import { StatusCode } from 'marmojs';
+import { Status } from 'marmojs';
 
 const setWait = (ms: any) => new Promise((r, j) => setTimeout(r, ms))
 
@@ -85,14 +85,14 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
     public pay = async (params: PayWitCallBackMarmoParams) => {
         const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
-        const intentId: string = await this.debtEngineMarmoModelWrapper.pay(params.id, params.origin, oracleData);
+        const intentId: string = await this.debtEngineMarmoModelWrapper.pay(params.id, params.amount, params.origin, oracleData);
         this.subscribeAsync(intentId, params.callback)
         return intentId;
     }
 
     public payToken = async (params: PayWitCallBackMarmoParams) => {
         const oracleData: string = await this.oracleWrapper.getOracleData(DiasporeAbstractAPI.CURRENCY);
-        const intentId: string = await this.debtEngineMarmoModelWrapper.payToken(params.id, params.origin, oracleData);
+        const intentId: string = await this.debtEngineMarmoModelWrapper.payToken(params.id, params.amount, params.origin, oracleData);
         this.subscribeAsync(intentId, params.callback)
         return intentId;
     }
@@ -134,14 +134,14 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
         return this.web3Wrapper.getBalanceInWeiAsync(addr);
     };
 
-    public getStatus = async (intentId: string): Promise<StatusCode> => {
+    public getStatus = async (intentId: string): Promise<Status> => {
         // FIXME: (WA)
         // there are that accept empty intent actions on marmojs
         const intentActionMock = new WETH(addressUtils.generatePseudoRandomAddress()).approve(addressUtils.generatePseudoRandomAddress(), "0");
         const intent: Intent = new IntentBuilder().withIntentAction(intentActionMock).build();
         const signedIntent = this.wallet.sign(intent);
-        signedIntent.id = intentId; // Work araund
-        return (await signedIntent.status(this.subProvider)).code;
+        signedIntent.id = intentId; // WA
+        return (await signedIntent.status(this.subProvider));
     }
 
     /**
@@ -154,7 +154,7 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
         while (Date.now() < mustEnd) {
             if (await predicate()) {
                 //TODO: sent to receipt (add Status Object to marmojs)
-                callback(null, (await this.getStatus(intentId)).toString())
+                callback(null, await this.getStatus(intentId))
                 return true
             } else {
                 await setWait(period)
@@ -165,7 +165,7 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
 
     private subscribeAsync(intentId: string, callback?: EventMarmoCallback) {
         if (callback) {
-            this.wait(async () => (await this.getStatus(intentId) === StatusCode.Settling), intentId, callback, 640)
+            this.wait(async () => ((await this.getStatus(intentId)).code === StatusCode.Settling), intentId, callback, 640)
         }
     }
 }

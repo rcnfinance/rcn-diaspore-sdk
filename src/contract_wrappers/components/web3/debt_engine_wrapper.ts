@@ -48,10 +48,7 @@ interface DebtEngineLogsAsyncParams extends GetLogs {
  */
 export default class DebtEngineWrapper extends ContractWrapper {
   public abi: ContractAbi = DebtEngine.abi;
-
-  private static PATH: string = ''; 
   protected contract: Promise<DebtEngineContract>;
-  protected client: DebtEngineClient;
 
   /**
    * Instantiate DebtEngineWrapper
@@ -61,16 +58,13 @@ export default class DebtEngineWrapper extends ContractWrapper {
   public constructor(web3Wrapper: Web3Wrapper, contract: Promise<DebtEngineContract>) {
     super(web3Wrapper, contract);
     this.contract = contract;
-    this.client = new DebtEngineClient()
   }
 
-  public pay = async (id: string, origin: string, oracleData: string) => {
-    const amount: BigNumber = await this.client.getAmountToPay(id);
+  public pay = async (id: string, amount:BigNumber, origin: string, oracleData: string) => {
     return (await this.contract).pay.sendTransactionAsync(id, amount, origin, oracleData)
   }
 
-  public payToken = async (id: string, origin: string, oracleData: string) => {
-    const amount: BigNumber = await this.client.getAmountToPay(id);
+  public payToken = async (id: string, amount:BigNumber, origin: string, oracleData: string) => {
     return (await this.contract).pay.sendTransactionAsync(id, amount, origin, oracleData)
   }
 

@@ -18,6 +18,7 @@ import {
   OracleEventArgs
 } from '@jpgonzalezra/abi-wrappers';
 import { RcnTokenEventArgs, RcnTokenEvents } from './contract_wrappers/tokens/rcn_token_wrapper'
+import { Status } from 'marmojs';
 
 /**
  * @param txData Data to override default values on tx, i.e. 'from', 'gasPrice'
@@ -59,7 +60,7 @@ export type EventCallback<ArgsType extends DecodedLogArgs> = (
 
 export type EventMarmoCallback = (
   err: null | Error,
-  log?: string,
+  log?: Status,
 ) => void;
 
 export interface IndexedFilterValues {

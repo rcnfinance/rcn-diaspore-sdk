@@ -87,6 +87,7 @@ export interface GetTokensParams {
 export interface PayParams {
     id: string;
     origin: string;
+    amount: BigNumber
 }
 
 export interface PayWithCallBackParams extends PayParams {
