@@ -26,6 +26,7 @@ import RcnTokenWrapper from './contract_wrappers/tokens/rcn_token_wrapper'
 import InstallmentsModelWrapper from './contract_wrappers/components/web3/installments_model_wrapper';
 import DebtEngineWrapper from './contract_wrappers/components/web3/debt_engine_wrapper';
 import OracleWrapper from './contract_wrappers/components/common/oracle_wrapper';
+import DebtEngineClient from './contract_wrappers/components/common/debt_engine_model_client';
 
 /**
  * The DiasporeAbstractAPI abstract class contains abtract components.
@@ -73,6 +74,11 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
    * An instance of web3Wrapper
    */
   protected web3Wrapper: Web3Wrapper;
+  /**
+   * An instance of DebtEngineClient
+   */
+  protected client: DebtEngineClient;
+
 
   /**
    * Instantiates a new DiasporeWeb3API instance.
@@ -120,6 +126,9 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
     )
 
     this.rcnToken = new RcnTokenWrapper(this.web3Wrapper, this.contractFactory.getRcnTokenContract());
+
+    this.client = new DebtEngineClient()
+
   }
 
   public abstract request(params: RequestParams): Promise<string>
@@ -181,23 +190,31 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
     const id: string = params.id;
     const value: BigNumber = params.value;
-    const request = { 
+    const request = {
       id,
-      oracleData, 
+      oracleData,
       cosigner,
-      cosignerLimit, 
+      cosignerLimit,
       cosignerData
     }
-    
+
     const spender: string = await this.loanManagerWrapper.address()
     const owner: string = await this.getAccount()
     const allowance: BigNumber = await this.rcnToken.allowance({ owner, spender })
-    if (!allowance.isEqualTo(value)) { 
+    if (!allowance.isEqualTo(value)) {
       throw new Error("Error sending tokens to borrower. ");
     }
 
     return request;
 
+  }
+
+  public getAmountNextObligation = async (id: string) => {
+    return await this.client.getAmountNextObligation(id)
+  }
+
+  public getAmountCurrentObligation = async (id: string) => {
+    return await this.client.getAmountCurrentObligation(id)
   }
 
   /**
