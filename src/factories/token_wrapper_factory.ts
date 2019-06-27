@@ -37,7 +37,6 @@ export default class TokenWrapperFactory {
     if (await token.isValidContract()) {
       return token;
     }
-    // TODO: Replace this for a typed Error
     throw new Error();
   };
 

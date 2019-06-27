@@ -148,17 +148,14 @@ export class DiasporeMarmoAPI extends DiasporeAbstractAPI {
      * Private methods
      */
 
-    //TODO: Refactor this method.
     private wait = async (predicate: () => Promise<boolean>, intentId: string, callback: EventMarmoCallback, timeout: number = 30, period = 1000) => {
         const mustEnd = Date.now() + timeout * period;
         while (Date.now() < mustEnd) {
             if (await predicate()) {
-                //TODO: sent to receipt (add Status Object to marmojs)
                 callback(null, await this.getStatus(intentId))
                 return true
-            } else {
-                await setWait(period)
             }
+            await setWait(period) 
         }
         return false;
     }

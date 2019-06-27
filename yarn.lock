@@ -427,18 +427,17 @@
   resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
   integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
-"@jpgonzalezra/marmo-abi-wrappers@1.0.18":
-  version "1.0.18"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.18.tgz#0d68726907ba533836597a83d2cb5f94267d2ee6"
-  integrity sha512-SCsTSL3H+rx1mCJmRKCU+fhByG7dUG86WagXz6DtKbiCvoTAx8g/mbdbWRyNR9fGUEFENGhtHtNzaq8Mt84/dw==
+"@jpgonzalezra/marmo-abi-wrappers@1.0.19":
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.19.tgz#6e65893bc1d84cfb7adedbec2f960a3afebac6e2"
+  integrity sha512-Po3qlDBblB00KETPGvJfZJuG+9Sgpi6oytUSajmyyUunXQy4P2KTDEOS2xU3/XJDbHZdbu59CRhycHY1wwwSLQ==
   dependencies:
     "@0x/utils" "^4.3.1"
     axios "^0.19.0"
     ethereum-types "^2.1.2"
     ethers "^4.0.27"
     lodash "^4.17.11"
-    marmojs "0.2.12"
-    typescript "3.2.2"
+    marmojs "0.2.13"
 
 "@ledgerhq/devices@^4.62.0":
   version "4.62.0"
@@ -1944,6 +1943,11 @@ bignumber.js@7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
   integrity sha512-S4XzBk5sMB+Rcb/LNcpzXr57VRTxgAvaAEDAl1AwRx27j00hT84O6OkteE7u8UB3NuaaygCRrEpqox4uDOrbdQ==
+
+bignumber.js@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.0.tgz#805880f84a329b5eac6e7cb6f8274b6d82bdf075"
+  integrity sha512-t/OYhhJ2SD+YGBQcjY8GzzDHEk9f3nerxjtfa6tlMXfe7frs/WozhvCNoGvpM0P3bNf3Gq5ZRMlGr5f3r4/N8A==
 
 "bignumber.js@git+https://github.com/frozeman/bignumber.js-nolookahead.git":
   version "2.0.7"
@@ -6803,12 +6807,13 @@ marked@^0.4.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
 
-marmojs@0.2.12:
-  version "0.2.12"
-  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.12.tgz#165519b48a51c7f84371b3f935717dcf7fa6269e"
-  integrity sha512-0+9LqjCHpuwMoCAgfI3WQBJKWQHOnnr7XzRb4/pnja2bkzli360qbfgmZrQqnJ3f7GCHEsU/sclrCQhZmfWHXg==
+marmojs@0.2.13:
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.13.tgz#138f4013dad5587c13a5566145fba83ee47a15fc"
+  integrity sha512-0c6vTWgqExY4NiM+1gg4CjEQlHiFg5rrMiiAvoUPif3zxDyjw/PeR6prVYI3K6e2ra/NDxQzVp8curatq4O9CQ==
   dependencies:
     axios "^0.19.0"
+    bignumber.js "^9.0.0"
     clean-webpack-plugin "^1.0.0"
     eth-sig-util "^2.1.0"
     ethereumjs-abi "^0.6.5"
