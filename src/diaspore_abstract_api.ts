@@ -149,13 +149,20 @@ export abstract class DiasporeAbstractAPI implements DiasporeAPI {
 
   public abstract getAccount(): Promise<string>
 
+  
+  private toInterestRate(interest: number): BigNumber {
+    const secondsInYear = 360 * 86400;
+    const rawInterest = Math.floor(10000000 / interest);
+    return new BigNumber(rawInterest * secondsInYear);
+  };
+
   protected async createRequestLoanParam(params: RequestParams): Promise<RequestLoanParams> {
     const model: string = await this.installmentModelWrapper.address();
     const oracle: string = await this.oracleWrapper.address();
 
     const data = await this.installmentModelWrapper.encodeData(
       params.cuota,
-      params.interestRate,
+      this.toInterestRate(params.interestRate.toNumber()),
       params.installments,
       params.duration,
       params.timeUnit
