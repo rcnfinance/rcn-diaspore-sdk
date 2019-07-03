@@ -427,17 +427,17 @@
   resolved "https://registry.yarnpkg.com/@jpgonzalezra/diaspore-contract-artifacts/-/diaspore-contract-artifacts-1.0.9.tgz#488d398b52034e05459b86233715599ddae4a7a2"
   integrity sha512-cbOMG7F4TcyeKdVx1bcj+isoJ3z3GZuSZK3DFgPKoqGgOCNr742bmPiV5VGfus+0mMxoln8Qzob0QKnUe62MHw==
 
-"@jpgonzalezra/marmo-abi-wrappers@1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.19.tgz#6e65893bc1d84cfb7adedbec2f960a3afebac6e2"
-  integrity sha512-Po3qlDBblB00KETPGvJfZJuG+9Sgpi6oytUSajmyyUunXQy4P2KTDEOS2xU3/XJDbHZdbu59CRhycHY1wwwSLQ==
+"@jpgonzalezra/marmo-abi-wrappers@1.0.21":
+  version "1.0.21"
+  resolved "https://registry.yarnpkg.com/@jpgonzalezra/marmo-abi-wrappers/-/marmo-abi-wrappers-1.0.21.tgz#1360eb72a0708d01af9a6ca7a5c56509cd325bf5"
+  integrity sha512-OQJ36roWiMmRiEdi+CH8lHRw4PO+AF4mFz397UC02NLv2bSxDqN+qzjTXsagu4Q/IO+L4qlw0NGISM++dOy1sQ==
   dependencies:
     "@0x/utils" "^4.3.1"
     axios "^0.19.0"
     ethereum-types "^2.1.2"
     ethers "^4.0.27"
     lodash "^4.17.11"
-    marmojs "0.2.13"
+    marmojs "0.2.18"
 
 "@ledgerhq/devices@^4.62.0":
   version "4.62.0"
@@ -6807,10 +6807,10 @@ marked@^0.4.0:
   resolved "https://registry.yarnpkg.com/marked/-/marked-0.4.0.tgz#9ad2c2a7a1791f10a852e0112f77b571dce10c66"
   integrity sha512-tMsdNBgOsrUophCAFQl0XPe6Zqk/uy9gnue+jIIKhykO51hxyu6uNx7zBPy0+y/WKYVZZMspV9YeXLNdKk+iYw==
 
-marmojs@0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.13.tgz#138f4013dad5587c13a5566145fba83ee47a15fc"
-  integrity sha512-0c6vTWgqExY4NiM+1gg4CjEQlHiFg5rrMiiAvoUPif3zxDyjw/PeR6prVYI3K6e2ra/NDxQzVp8curatq4O9CQ==
+marmojs@0.2.18:
+  version "0.2.18"
+  resolved "https://registry.yarnpkg.com/marmojs/-/marmojs-0.2.18.tgz#175d66243891e5d5667af4b242e40e37cf8adce4"
+  integrity sha512-Y0Sg1e0+fahSGlE5n2v/pW/RIBmiAZgRdLZ2jKnpPBzAKsuPB4AWUb5w21XvwLAytwZD2TaUDmk+IEpev0JpOQ==
   dependencies:
     axios "^0.19.0"
     bignumber.js "^9.0.0"
