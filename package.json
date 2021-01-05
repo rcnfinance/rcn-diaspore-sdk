@@ -76,7 +76,7 @@
     "@jpgonzalezra/abi-wrappers": "1.0.9",
     "@jpgonzalezra/diaspore-contract-artifacts": "1.0.9",
     "@jpgonzalezra/marmo-abi-wrappers": "1.0.21",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "ethereum-types": "^2.1.2",
     "ethereumjs-blockstream": "6.0.0",
     "ethereumjs-util": "^6.1.0",
